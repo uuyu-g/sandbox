@@ -1,0 +1,46 @@
+# --- Common ---
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log
+.env
+.env.*
+!.env.example
+
+# --- TypeScript / Node ---
+node_modules/
+dist/
+build/
+.next/
+.turbo/
+coverage/
+.pnpm-store/
+*.tsbuildinfo
+
+# --- Rust ---
+target/
+**/*.rs.bk
+
+# --- MoonBit ---
+# target/ is shared with Rust
+.mooncakes/
+
+# --- Ruby ---
+.bundle/
+vendor/bundle/
+tmp/
+log/
+*.gem
+
+# --- Swift ---
+.build/
+.swiftpm/
+Packages/
+DerivedData/
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+Pods/
+*.ipa
+*.dSYM
+*.dSYM.zip
