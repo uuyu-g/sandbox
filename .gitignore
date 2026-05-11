@@ -1,0 +1,33 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Node / TS
+node_modules/
+dist/
+build/
+*.tsbuildinfo
+.next/
+coverage/
+
+# Env / secrets
+.env
+.env.local
+
+# MoonBit
+target/
+.mooncakes/
+
+# Swift / Xcode
+.build/
+.swiftpm/
+DerivedData/
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+xcuserdata/
+
+# Logs / tmp
+*.log
+tmp/
