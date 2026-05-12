@@ -82,7 +82,7 @@ export default function TaskForm({ date }) {
           />
         </FormControl>
       </div>
-      <div className={css({ display: 'flex', alignItems: 'center', height: '48px' })}>
+      <div className={css({ paddingBottom: '16px' })}>
         <Button
           type="submit"
           kind={KIND.primary}
