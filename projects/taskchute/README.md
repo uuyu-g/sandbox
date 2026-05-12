@@ -25,7 +25,7 @@ Ruby 3.3 と Node.js 22 を前提。
 
 ```bash
 bundle install
-npm install
+pnpm install
 bin/rails db:migrate
 ```
 
