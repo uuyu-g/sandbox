@@ -14,5 +14,11 @@
     "react-dom": "^19.2.6",
     "styletron-engine-atomic": "^1.6.2",
     "styletron-react": "^6.1.1"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "fsevents"
+    ]
   }
 }
