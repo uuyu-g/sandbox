@@ -51,40 +51,48 @@ export default function TaskForm({ date }) {
         marginBottom: '24px',
       })}
     >
-      <FormControl label="タイトル">
-        <Input
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="新しいタスク"
-          required
-        />
-      </FormControl>
-      <FormControl label="セクション">
-        <Select
-          options={SECTIONS}
-          value={section}
-          onChange={({ value }) => setSection(value.length ? value : [SECTIONS[0]])}
-          clearable={false}
-          searchable={false}
-        />
-      </FormControl>
-      <FormControl label="見積(分)">
-        <Input
-          type="number"
-          min={0}
-          value={estimate}
-          onChange={(e) => setEstimate(e.target.value)}
-        />
-      </FormControl>
-      <Button
-        type="submit"
-        kind={KIND.primary}
-        size={SIZE.compact}
-        isLoading={submitting}
-        disabled={!title.trim()}
-      >
-        追加
-      </Button>
+      <div className={css({ minWidth: 0 })}>
+        <FormControl label="タイトル">
+          <Input
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="新しいタスク"
+            required
+          />
+        </FormControl>
+      </div>
+      <div>
+        <FormControl label="セクション">
+          <Select
+            options={SECTIONS}
+            value={section}
+            onChange={({ value }) => setSection(value.length ? value : [SECTIONS[0]])}
+            clearable={false}
+            searchable={false}
+          />
+        </FormControl>
+      </div>
+      <div>
+        <FormControl label="見積(分)">
+          <Input
+            type="number"
+            min={0}
+            value={estimate}
+            onChange={(e) => setEstimate(e.target.value)}
+          />
+        </FormControl>
+      </div>
+      <div className={css({ display: 'flex', alignItems: 'center', height: '48px' })}>
+        <Button
+          type="submit"
+          kind={KIND.primary}
+          size={SIZE.compact}
+          isLoading={submitting}
+          disabled={!title.trim()}
+        >
+          追加
+        </Button>
+      </div>
     </form>
   )
 }
