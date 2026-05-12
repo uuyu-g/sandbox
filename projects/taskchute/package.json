@@ -3,17 +3,19 @@
   "type": "module",
   "packageManager": "pnpm@11.1.1",
   "devDependencies": {
+    "@types/node": "^22.10.5",
+    "@types/react": "^19.0.7",
+    "@types/react-dom": "^19.0.3",
     "@vitejs/plugin-react": "^6.0.1",
+    "typescript": "^5.7.3",
     "vite": "^8.0.12",
     "vite-plugin-ruby": "^5.2.2"
   },
   "dependencies": {
     "@inertiajs/react": "^3.1.1",
-    "baseui": "^16.1.1",
+    "lucide-react": "^0.469.0",
     "react": "^19.2.6",
-    "react-dom": "^19.2.6",
-    "styletron-engine-atomic": "^1.6.2",
-    "styletron-react": "^6.1.1"
+    "react-dom": "^19.2.6"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
