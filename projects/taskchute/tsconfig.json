@@ -18,9 +18,8 @@
     "allowJs": false,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".",
     "paths": {
-      "@/*": ["app/javascript/*"]
+      "@/*": ["./app/javascript/*"]
     },
     "types": ["node", "vite/client"]
   },
