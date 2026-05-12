@@ -8,6 +8,14 @@ import AppLayout from '../components/AppLayout'
 
 const engine = new Styletron()
 
+const theme = {
+  ...LightTheme,
+  colors: {
+    ...LightTheme.colors,
+    borderOpaque: '#94A3B8',
+  },
+}
+
 const pages = import.meta.glob('../pages/**/*.jsx', { eager: true })
 
 createInertiaApp({
@@ -23,7 +31,7 @@ createInertiaApp({
   setup({ el, App, props }) {
     createRoot(el).render(
       <StyletronProvider value={engine}>
-        <BaseProvider theme={LightTheme}>
+        <BaseProvider theme={theme}>
           <App {...props} />
         </BaseProvider>
       </StyletronProvider>
