@@ -2,17 +2,9 @@ import React, { useState } from 'react'
 import { router } from '@inertiajs/react'
 import { Loader2, Plus } from 'lucide-react'
 
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
+import { Button } from '@/components/ui/Button'
 import { SECTIONS, type SectionValue } from '@/lib/format'
+import styles from './TaskForm.module.css'
 
 interface Props {
   date: string
@@ -50,13 +42,10 @@ export default function TaskForm({ date }: Props) {
   }
 
   return (
-    <form
-      onSubmit={submit}
-      className="mb-6 grid items-end gap-3 sm:grid-cols-[minmax(0,1fr)_140px_110px_auto]"
-    >
-      <div className="grid gap-1.5">
-        <Label htmlFor="task-title">タイトル</Label>
-        <Input
+    <form onSubmit={submit} className={styles.form}>
+      <div className={styles.field}>
+        <label htmlFor="task-title">タイトル</label>
+        <input
           id="task-title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
@@ -64,24 +53,23 @@ export default function TaskForm({ date }: Props) {
           required
         />
       </div>
-      <div className="grid gap-1.5">
-        <Label>セクション</Label>
-        <Select value={section} onValueChange={(v) => setSection(v as SectionValue)}>
-          <SelectTrigger>
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {SECTIONS.map((s) => (
-              <SelectItem key={s.value} value={s.value}>
-                {s.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+      <div className={styles.field}>
+        <label htmlFor="task-section">セクション</label>
+        <select
+          id="task-section"
+          value={section}
+          onChange={(e) => setSection(e.target.value as SectionValue)}
+        >
+          {SECTIONS.map((s) => (
+            <option key={s.value} value={s.value}>
+              {s.label}
+            </option>
+          ))}
+        </select>
       </div>
-      <div className="grid gap-1.5">
-        <Label htmlFor="task-estimate">見積(分)</Label>
-        <Input
+      <div className={styles.field}>
+        <label htmlFor="task-estimate">見積(分)</label>
+        <input
           id="task-estimate"
           type="number"
           min={0}
@@ -91,7 +79,7 @@ export default function TaskForm({ date }: Props) {
       </div>
       <div>
         <Button type="submit" disabled={!title.trim() || submitting}>
-          {submitting ? <Loader2 className="animate-spin" /> : <Plus />}
+          {submitting ? <Loader2 className={styles.spin} /> : <Plus />}
           追加
         </Button>
       </div>

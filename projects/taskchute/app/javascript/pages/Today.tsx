@@ -1,14 +1,13 @@
 import React, { useMemo } from 'react'
 import { Head, router, usePage } from '@inertiajs/react'
-import { ChevronLeft, ChevronRight, CalendarDays, Repeat } from 'lucide-react'
+import { CalendarDays, ChevronLeft, ChevronRight, Repeat } from 'lucide-react'
 
 import TaskForm from '@/components/TaskForm'
 import TaskRow, { type Task } from '@/components/TaskRow'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Card, CardContent } from '@/components/ui/card'
-import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/Button'
+import { cx } from '@/lib/utils'
 import { SECTIONS, formatMinutes, sectionLabel, type SectionValue } from '@/lib/format'
+import styles from './Today.module.css'
 
 interface Summary {
   done_count: number
@@ -60,17 +59,17 @@ export default function Today({ date, tasks, summary }: TodayProps) {
     <div>
       <Head title={`TaskChute - ${date}`} />
 
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex flex-wrap items-center gap-2">
+      <div className={styles.toolbar}>
+        <div className={styles.dateNav}>
           <Button size="sm" variant="ghost" onClick={() => changeDate(-1)}>
             <ChevronLeft />
             前日
           </Button>
-          <Input
+          <input
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="h-8 w-44 text-sm"
+            className={styles.dateInput}
           />
           <Button size="sm" variant="ghost" onClick={() => changeDate(1)}>
             翌日
@@ -91,15 +90,11 @@ export default function Today({ date, tasks, summary }: TodayProps) {
         </Button>
       </div>
 
-      {flash?.notice && (
-        <div className="mb-4 rounded-md bg-sky-50 px-3 py-2 text-sm text-sky-900">
-          {flash.notice}
-        </div>
-      )}
+      {flash?.notice && <div className={styles.notice}>{flash.notice}</div>}
 
       <TaskForm date={date} />
 
-      <div className="mb-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div className={styles.summaryGrid}>
         <SummaryCard label="タスク" value={`${summary.done_count} / ${summary.total_count}`} />
         <SummaryCard label="見積合計" value={formatMinutes(summary.estimate)} />
         <SummaryCard label="実績合計" value={formatMinutes(summary.actual)} />
@@ -110,21 +105,21 @@ export default function Today({ date, tasks, summary }: TodayProps) {
         />
       </div>
 
-      <div className="flex flex-col gap-6">
+      <div className={styles.sections}>
         {SECTIONS.map((s) => (
           <section key={s.value}>
-            <div className="mb-2 flex items-baseline gap-3">
-              <h2 className="text-lg font-bold">{s.label}</h2>
-              <p className="text-xs text-muted-foreground">
+            <div className={styles.sectionHeader}>
+              <h2 className={styles.sectionTitle}>{s.label}</h2>
+              <p className={styles.sectionCount}>
                 {grouped[s.value as SectionValue].length} 件
               </p>
             </div>
             {grouped[s.value as SectionValue].length === 0 ? (
-              <div className="rounded-lg border border-dashed border-border p-4 text-center text-sm text-muted-foreground">
+              <div className={styles.empty}>
                 {sectionLabel(s.value)} のタスクはまだありません
               </div>
             ) : (
-              <div className="flex flex-col gap-2">
+              <div className={styles.taskList}>
                 {grouped[s.value as SectionValue].map((t) => (
                   <TaskRow key={t.id} task={t} />
                 ))}
@@ -147,19 +142,17 @@ function SummaryCard({
   tone?: 'positive' | 'negative'
 }) {
   return (
-    <Card>
-      <CardContent className="p-4 pt-4">
-        <div className="text-xs font-medium text-muted-foreground">{label}</div>
-        <div
-          className={cn(
-            'mt-1 text-2xl font-bold',
-            tone === 'positive' && 'text-emerald-600',
-            tone === 'negative' && 'text-rose-600',
-          )}
-        >
-          {value}
-        </div>
-      </CardContent>
-    </Card>
+    <div className={styles.summaryCard}>
+      <div className={styles.summaryLabel}>{label}</div>
+      <div
+        className={cx(
+          styles.summaryValue,
+          tone === 'positive' && styles.summaryValuePositive,
+          tone === 'negative' && styles.summaryValueNegative,
+        )}
+      >
+        {value}
+      </div>
+    </div>
   )
 }

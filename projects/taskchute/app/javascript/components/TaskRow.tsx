@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { router } from '@inertiajs/react'
-import { RotateCcw, X, Repeat } from 'lucide-react'
+import { Repeat, RotateCcw, X } from 'lucide-react'
 
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Badge } from '@/components/ui/badge'
-import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/Button'
+import { Badge } from '@/components/ui/Badge'
+import { cx } from '@/lib/utils'
 import { formatMinutes, formatTime } from '@/lib/format'
+import styles from './TaskRow.module.css'
 
 export interface Task {
   id: number
@@ -61,66 +61,56 @@ export default function TaskRow({ task }: { task: Task }) {
 
   return (
     <div
-      className={cn(
-        'grid items-center gap-3 rounded-lg border p-3 transition-colors',
-        'sm:grid-cols-[120px_minmax(0,1fr)_110px_120px_minmax(220px,auto)]',
-        task.done
-          ? 'border-border bg-muted/60 opacity-70'
-          : task.in_progress
-            ? 'border-sky-200 bg-sky-50/60'
-            : 'border-border bg-card',
+      className={cx(
+        styles.row,
+        task.done && styles.rowDone,
+        !task.done && task.in_progress && styles.rowInProgress,
       )}
     >
-      <div className="flex flex-col gap-1">
+      <div className={styles.status}>
         {statusBadge}
-        <div className="text-xs text-muted-foreground">
+        <div className={styles.time}>
           {formatTime(task.started_at)} → {formatTime(task.finished_at)}
         </div>
       </div>
 
-      <div className="min-w-0">
+      <div className={styles.titleCell}>
         {editing ? (
-          <Input
+          <input
+            className={styles.editInput}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && saveEdit()}
             autoFocus
-            className="h-8 text-sm"
           />
         ) : (
           <button
             type="button"
             onClick={() => setEditing(true)}
             title="クリックで編集"
-            className={cn(
-              'block w-full truncate text-left font-semibold hover:underline',
-              task.done && 'line-through',
-            )}
+            className={cx(styles.titleButton, task.done && styles.titleDone)}
           >
             {task.title}
           </button>
         )}
         {task.routine_template_id && (
-          <div className="mt-0.5 flex items-center gap-1 text-[11px] text-muted-foreground">
-            <Repeat className="h-3 w-3" />
+          <div className={styles.routineLabel}>
+            <Repeat />
             ルーチン
           </div>
         )}
       </div>
 
-      <div className="text-sm">
+      <div className={styles.estimate}>
         {editing ? (
-          <div className="relative">
-            <Input
+          <div className={styles.estimateInputWrap}>
+            <input
               type="number"
               min={0}
               value={estimate}
               onChange={(e) => setEstimate(e.target.value)}
-              className="h-8 pr-8 text-sm"
             />
-            <span className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
-              分
-            </span>
+            <span className={styles.estimateUnit}>分</span>
           </div>
         ) : (
           <span>見積 {formatMinutes(task.estimate_minutes)}</span>
@@ -128,13 +118,10 @@ export default function TaskRow({ task }: { task: Task }) {
       </div>
 
       <div
-        className={cn(
-          'text-sm',
-          delta == null
-            ? 'text-muted-foreground'
-            : delta > 0
-              ? 'text-rose-600'
-              : 'text-emerald-600',
+        className={cx(
+          styles.actual,
+          delta != null && delta > 0 && styles.actualOver,
+          delta != null && delta <= 0 && styles.actualUnder,
         )}
       >
         実績{' '}
@@ -145,7 +132,7 @@ export default function TaskRow({ task }: { task: Task }) {
             }`}
       </div>
 
-      <div className="flex flex-wrap justify-end gap-1.5">
+      <div className={styles.actions}>
         {editing ? (
           <>
             <Button size="sm" onClick={saveEdit}>

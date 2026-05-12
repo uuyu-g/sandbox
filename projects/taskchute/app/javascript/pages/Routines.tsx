@@ -2,19 +2,9 @@ import React, { useState } from 'react'
 import { Head, router, usePage } from '@inertiajs/react'
 import { Repeat, X } from 'lucide-react'
 
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Badge } from '@/components/ui/badge'
-import { Checkbox } from '@/components/ui/checkbox'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/Button'
+import { Badge } from '@/components/ui/Badge'
+import { cx } from '@/lib/utils'
 import {
   SECTIONS,
   WEEKDAYS,
@@ -22,6 +12,7 @@ import {
   sectionLabel,
   type SectionValue,
 } from '@/lib/format'
+import styles from './Routines.module.css'
 
 interface Routine {
   id: number
@@ -112,10 +103,10 @@ export default function Routines({ routines }: RoutinesProps) {
     <div>
       <Head title="TaskChute - ルーチン" />
 
-      <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
+      <div className={styles.header}>
         <div>
-          <h1 className="text-lg font-bold">ルーチン</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <h1 className={styles.title}>ルーチン</h1>
+          <p className={styles.description}>
             毎日繰り返すタスクを登録しておくと、対象曜日に「今日」へワンクリックで展開できます。
           </p>
         </div>
@@ -125,46 +116,35 @@ export default function Routines({ routines }: RoutinesProps) {
         </Button>
       </div>
 
-      {flash?.notice && (
-        <div className="mb-4 rounded-md bg-sky-50 px-3 py-2 text-sm text-sky-900">
-          {flash.notice}
-        </div>
-      )}
+      {flash?.notice && <div className={styles.notice}>{flash.notice}</div>}
 
-      <form
-        onSubmit={submitNew}
-        className="mb-6 grid items-end gap-3 rounded-lg border border-border p-4 sm:grid-cols-[minmax(0,1fr)_140px_120px_auto]"
-      >
-        <div className="grid gap-1.5">
-          <Label htmlFor="routine-title">タイトル</Label>
-          <Input
+      <form onSubmit={submitNew} className={styles.form}>
+        <div className={styles.field}>
+          <label htmlFor="routine-title">タイトル</label>
+          <input
             id="routine-title"
             value={draft.title}
             onChange={(e) => setDraft({ ...draft, title: e.target.value })}
             placeholder="朝の散歩"
           />
         </div>
-        <div className="grid gap-1.5">
-          <Label>セクション</Label>
-          <Select
+        <div className={styles.field}>
+          <label htmlFor="routine-section">セクション</label>
+          <select
+            id="routine-section"
             value={draft.section}
-            onValueChange={(v) => setDraft({ ...draft, section: v as SectionValue })}
+            onChange={(e) => setDraft({ ...draft, section: e.target.value as SectionValue })}
           >
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {SECTIONS.map((s) => (
-                <SelectItem key={s.value} value={s.value}>
-                  {s.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+            {SECTIONS.map((s) => (
+              <option key={s.value} value={s.value}>
+                {s.label}
+              </option>
+            ))}
+          </select>
         </div>
-        <div className="grid gap-1.5">
-          <Label htmlFor="routine-estimate">見積(分)</Label>
-          <Input
+        <div className={styles.field}>
+          <label htmlFor="routine-estimate">見積(分)</label>
+          <input
             id="routine-estimate"
             type="number"
             min={0}
@@ -177,8 +157,8 @@ export default function Routines({ routines }: RoutinesProps) {
         <Button type="submit" disabled={!draft.title.trim()}>
           追加
         </Button>
-        <div className="sm:col-span-full">
-          <Label className="mb-2 block">繰り返す曜日</Label>
+        <div className={styles.fullRow}>
+          <label className={styles.weekdaysLabel}>繰り返す曜日</label>
           <WeekdayPicker
             value={draft.weekdays}
             onChange={(weekdays) => setDraft({ ...draft, weekdays })}
@@ -186,48 +166,40 @@ export default function Routines({ routines }: RoutinesProps) {
         </div>
       </form>
 
-      <div className="flex flex-col gap-2">
+      <div className={styles.list}>
         {routines.length === 0 && (
-          <div className="rounded-lg border border-dashed border-border p-6 text-center text-sm text-muted-foreground">
+          <div className={styles.empty}>
             ルーチンはまだありません。上のフォームから追加できます。
           </div>
         )}
         {routines.map((r) =>
           editing?.id === r.id ? (
-            <div
-              key={r.id}
-              className="grid items-end gap-3 rounded-lg border-2 border-primary/40 p-4 sm:grid-cols-[minmax(0,1fr)_140px_120px_auto_auto]"
-            >
-              <div className="grid gap-1.5">
-                <Label>タイトル</Label>
-                <Input
+            <div key={r.id} className={cx(styles.row, styles.editing)}>
+              <div className={styles.field}>
+                <label>タイトル</label>
+                <input
                   value={editing.title}
                   onChange={(e) => setEditing({ ...editing, title: e.target.value })}
                 />
               </div>
-              <div className="grid gap-1.5">
-                <Label>セクション</Label>
-                <Select
+              <div className={styles.field}>
+                <label>セクション</label>
+                <select
                   value={editing.section}
-                  onValueChange={(v) =>
-                    setEditing({ ...editing, section: v as SectionValue })
+                  onChange={(e) =>
+                    setEditing({ ...editing, section: e.target.value as SectionValue })
                   }
                 >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {SECTIONS.map((s) => (
-                      <SelectItem key={s.value} value={s.value}>
-                        {s.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                  {SECTIONS.map((s) => (
+                    <option key={s.value} value={s.value}>
+                      {s.label}
+                    </option>
+                  ))}
+                </select>
               </div>
-              <div className="grid gap-1.5">
-                <Label>見積(分)</Label>
-                <Input
+              <div className={styles.field}>
+                <label>見積(分)</label>
+                <input
                   type="number"
                   min={0}
                   value={String(editing.estimate_minutes)}
@@ -243,22 +215,23 @@ export default function Routines({ routines }: RoutinesProps) {
               <Button size="icon" variant="ghost" onClick={() => setEditing(null)}>
                 <X />
               </Button>
-              <div className="sm:col-span-full">
-                <Label className="mb-2 block">繰り返す曜日</Label>
+              <div className={styles.fullRow}>
+                <label className={styles.weekdaysLabel}>繰り返す曜日</label>
                 <WeekdayPicker
                   value={editing.weekdays}
                   onChange={(weekdays) => setEditing({ ...editing, weekdays })}
                 />
               </div>
-              <div className="flex items-center gap-2 sm:col-span-full">
-                <Checkbox
+              <div className={cx(styles.fullRow, styles.activeRow)}>
+                <input
                   id={`active-${editing.id}`}
+                  type="checkbox"
                   checked={editing.active}
-                  onCheckedChange={(checked) =>
-                    setEditing({ ...editing, active: checked === true })
-                  }
+                  onChange={(e) => setEditing({ ...editing, active: e.target.checked })}
                 />
-                <Label htmlFor={`active-${editing.id}`}>有効</Label>
+                <label htmlFor={`active-${editing.id}`} className={styles.activeLabel}>
+                  有効
+                </label>
               </div>
             </div>
           ) : (
@@ -285,37 +258,24 @@ function RoutineRow({
   onDelete: () => void
 }) {
   return (
-    <div
-      className={cn(
-        'grid items-center gap-3 rounded-lg border border-border bg-card p-3',
-        'sm:grid-cols-[100px_minmax(0,1fr)_100px_minmax(220px,auto)_minmax(160px,auto)]',
-        !routine.active && 'opacity-50',
-      )}
-    >
+    <div className={cx(styles.row, !routine.active && styles.rowInactive)}>
       <Badge variant="muted">{sectionLabel(routine.section)}</Badge>
-      <div className="font-semibold">{routine.title}</div>
-      <div className="text-sm text-muted-foreground">
-        {formatMinutes(routine.estimate_minutes)}
-      </div>
-      <div className="flex flex-wrap gap-1">
+      <div className={styles.rowTitle}>{routine.title}</div>
+      <div className={styles.rowEstimate}>{formatMinutes(routine.estimate_minutes)}</div>
+      <div className={styles.weekdayChips}>
         {WEEKDAYS.map((w) => {
           const on = routine.weekdays.includes(w.value)
           return (
             <span
               key={w.value}
-              className={cn(
-                'inline-flex h-6 w-6 items-center justify-center rounded-full text-[11px] font-semibold',
-                on
-                  ? 'bg-primary text-primary-foreground'
-                  : 'bg-muted text-muted-foreground',
-              )}
+              className={cx(styles.weekdayChip, on && styles.weekdayChipOn)}
             >
               {w.label}
             </span>
           )
         })}
       </div>
-      <div className="flex justify-end gap-1.5">
+      <div className={styles.rowActions}>
         <Button size="sm" variant="outline" onClick={onEdit}>
           編集
         </Button>
@@ -339,7 +299,7 @@ function WeekdayPicker({
     else onChange([...value, w].sort((a, b) => a - b))
   }
   return (
-    <div className="flex gap-1.5">
+    <div className={styles.weekdayPicker}>
       {WEEKDAYS.map((w) => {
         const on = value.includes(w.value)
         return (
@@ -347,12 +307,7 @@ function WeekdayPicker({
             key={w.value}
             type="button"
             onClick={() => toggle(w.value)}
-            className={cn(
-              'flex h-9 w-9 items-center justify-center rounded-full border text-sm font-semibold transition-colors',
-              on
-                ? 'border-primary bg-primary text-primary-foreground'
-                : 'border-border bg-transparent text-foreground hover:bg-secondary',
-            )}
+            className={cx(styles.weekdayButton, on && styles.weekdayButtonOn)}
           >
             {w.label}
           </button>

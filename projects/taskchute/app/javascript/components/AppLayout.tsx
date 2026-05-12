@@ -1,6 +1,8 @@
 import React from 'react'
 import { Link, usePage } from '@inertiajs/react'
-import { cn } from '@/lib/utils'
+
+import { cx } from '@/lib/utils'
+import styles from './AppLayout.module.css'
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const { url } = usePage()
@@ -8,33 +10,25 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const navLink = (href: string, label: string) => {
     const active = url === href || (href !== '/' && url.startsWith(href))
     return (
-      <Link
-        href={href}
-        className={cn(
-          'rounded-md px-3 py-2 text-sm font-semibold transition-colors',
-          active
-            ? 'bg-primary text-primary-foreground'
-            : 'text-foreground hover:bg-secondary',
-        )}
-      >
+      <Link href={href} className={cx(styles.navLink, active && styles.navLinkActive)}>
         {label}
       </Link>
     )
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <header className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-6 py-4 sm:px-8">
-        <div className="flex items-baseline gap-3">
-          <h1 className="text-xl font-bold tracking-tight">TaskChute</h1>
-          <p className="text-sm text-muted-foreground">1日のタスクをシュートする</p>
+    <div className={styles.root}>
+      <header className={styles.header}>
+        <div className={styles.heading}>
+          <h1 className={styles.title}>TaskChute</h1>
+          <p className={styles.subtitle}>1日のタスクをシュートする</p>
         </div>
-        <nav className="flex gap-2">
+        <nav className={styles.nav}>
           {navLink('/', '今日')}
           {navLink('/routines', 'ルーチン')}
         </nav>
       </header>
-      <main className="mx-auto max-w-5xl px-4 py-8 sm:px-6">{children}</main>
+      <main className={styles.main}>{children}</main>
     </div>
   )
 }
