@@ -44,8 +44,9 @@ export default function TaskForm({ date }) {
       onSubmit={submit}
       className={css({
         display: 'grid',
-        gridTemplateColumns: '1fr 140px 100px auto',
-        gap: '12px',
+        gridTemplateColumns: 'minmax(0, 1fr) 120px 90px auto',
+        columnGap: '12px',
+        rowGap: '0',
         alignItems: 'end',
         marginBottom: '24px',
       })}
