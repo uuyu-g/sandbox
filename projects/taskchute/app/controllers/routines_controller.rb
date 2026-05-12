@@ -15,9 +15,9 @@ class RoutinesController < ApplicationController
     attrs[:position] ||= next_position_for(attrs[:section])
     routine = RoutineTemplate.new(attrs)
     if routine.save
-      redirect_to routines_path
+      redirect_to routines_path, status: :see_other
     else
-      redirect_to routines_path, inertia: { errors: routine.errors }
+      redirect_to routines_path, inertia: { errors: routine.errors }, status: :see_other
     end
   end
 
@@ -27,15 +27,15 @@ class RoutinesController < ApplicationController
       attrs[:weekdays_mask] = build_weekdays_mask(params[:routine_template])
     end
     if @routine.update(attrs)
-      redirect_to routines_path
+      redirect_to routines_path, status: :see_other
     else
-      redirect_to routines_path, inertia: { errors: @routine.errors }
+      redirect_to routines_path, inertia: { errors: @routine.errors }, status: :see_other
     end
   end
 
   def destroy
     @routine.destroy
-    redirect_to routines_path
+    redirect_to routines_path, status: :see_other
   end
 
   # Expands routines for a given date (default today) into Task rows.
@@ -66,7 +66,7 @@ class RoutinesController < ApplicationController
       created += 1
     end
 
-    redirect_to tasks_path(date: date.iso8601), notice: "ルーチンを #{created} 件展開しました"
+    redirect_to tasks_path(date: date.iso8601), notice: "ルーチンを #{created} 件展開しました", status: :see_other
   end
 
   private
