@@ -38,10 +38,17 @@ export default function Today({ date, tasks, summary }: TodayProps) {
     return map
   }, [tasks])
 
+  const toLocalIsoDate = (d: Date) => {
+    const y = d.getFullYear()
+    const m = (d.getMonth() + 1).toString().padStart(2, '0')
+    const day = d.getDate().toString().padStart(2, '0')
+    return `${y}-${m}-${day}`
+  }
+
   const changeDate = (delta: number) => {
     const d = new Date(date + 'T00:00:00')
     d.setDate(d.getDate() + delta)
-    router.get('/', { date: d.toISOString().slice(0, 10) }, { preserveScroll: true })
+    router.get('/', { date: toLocalIsoDate(d) }, { preserveScroll: true })
   }
 
   const setDate = (iso: string) => {
@@ -78,7 +85,7 @@ export default function Today({ date, tasks, summary }: TodayProps) {
           <Button
             size="sm"
             variant="outline"
-            onClick={() => setDate(new Date().toISOString().slice(0, 10))}
+            onClick={() => setDate(toLocalIsoDate(new Date()))}
           >
             <CalendarDays />
             今日
