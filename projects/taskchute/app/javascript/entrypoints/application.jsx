@@ -16,15 +16,15 @@ createInertiaApp({
     if (!page) {
       throw new Error(`Inertia page not found: ${name}`)
     }
+    page.default.layout =
+      page.default.layout || ((children) => <AppLayout>{children}</AppLayout>)
     return page
   },
   setup({ el, App, props }) {
     createRoot(el).render(
       <StyletronProvider value={engine}>
         <BaseProvider theme={LightTheme}>
-          <AppLayout>
-            <App {...props} />
-          </AppLayout>
+          <App {...props} />
         </BaseProvider>
       </StyletronProvider>
     )
