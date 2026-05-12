@@ -32,7 +32,8 @@ export default function TaskRow({ task }: { task: Task }) {
   const onFinish = () => router.post(`/tasks/${task.id}/finish`, {}, opts)
   const onReset = () => router.post(`/tasks/${task.id}/reset`, {}, opts)
   const onDelete = () => {
-    if (!confirm(`「${task.title}」を削除しますか？`)) return
+    const label = task.title.trim() || '無題のタスク'
+    if (!confirm(`「${label}」を削除しますか？`)) return
     router.delete(`/tasks/${task.id}`, opts)
   }
   const saveEdit = () => {
@@ -40,7 +41,7 @@ export default function TaskRow({ task }: { task: Task }) {
       `/tasks/${task.id}`,
       {
         task: {
-          title: title.trim() || task.title,
+          title: title.trim(),
           estimate_minutes: parseInt(estimate, 10) || 0,
         },
       },
@@ -88,9 +89,13 @@ export default function TaskRow({ task }: { task: Task }) {
             type="button"
             onClick={() => setEditing(true)}
             title="クリックで編集"
-            className={cx(styles.titleButton, task.done && styles.titleDone)}
+            className={cx(
+              styles.titleButton,
+              task.done && styles.titleDone,
+              !task.title && styles.titlePlaceholder,
+            )}
           >
-            {task.title}
+            {task.title || 'タスク名を入力'}
           </button>
         )}
         {task.routine_template_id && (

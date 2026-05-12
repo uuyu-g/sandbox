@@ -3,7 +3,6 @@ class Task < ApplicationRecord
 
   belongs_to :routine_template, optional: true
 
-  validates :title, presence: true
   validates :section, inclusion: { in: SECTIONS }
   validates :estimate_minutes, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :scheduled_on, presence: true
