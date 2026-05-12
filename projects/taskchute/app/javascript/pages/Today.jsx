@@ -20,10 +20,17 @@ export default function Today({ date, tasks, summary }) {
     return map
   }, [tasks])
 
+  const toLocalIsoDate = (d) => {
+    const y = d.getFullYear()
+    const m = (d.getMonth() + 1).toString().padStart(2, '0')
+    const day = d.getDate().toString().padStart(2, '0')
+    return `${y}-${m}-${day}`
+  }
+
   const changeDate = (delta) => {
     const d = new Date(date + 'T00:00:00')
     d.setDate(d.getDate() + delta)
-    router.get('/', { date: d.toISOString().slice(0, 10) }, { preserveScroll: true })
+    router.get('/', { date: toLocalIsoDate(d) }, { preserveScroll: true })
   }
 
   const setDate = (iso) => {
@@ -60,7 +67,7 @@ export default function Today({ date, tasks, summary }) {
             />
           </div>
           <Button size={SIZE.compact} kind={KIND.tertiary} onClick={() => changeDate(1)}>翌日 →</Button>
-          <Button size={SIZE.compact} kind={KIND.tertiary} onClick={() => setDate(new Date().toISOString().slice(0, 10))}>今日</Button>
+          <Button size={SIZE.compact} kind={KIND.tertiary} onClick={() => setDate(toLocalIsoDate(new Date()))}>今日</Button>
         </div>
         <Button size={SIZE.compact} kind={KIND.secondary} onClick={expandRoutines}>
           ⟲ ルーチンを展開
