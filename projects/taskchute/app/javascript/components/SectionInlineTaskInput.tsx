@@ -1,7 +1,8 @@
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { router } from '@inertiajs/react'
 
 import { type SectionValue, sectionLabel } from '@/lib/format'
+import { onEnterKey } from '@/lib/utils'
 import styles from './SectionInlineTaskInput.module.css'
 
 interface Props {
@@ -43,12 +44,10 @@ export default function SectionInlineTaskInput({ date, section }: Props) {
     )
   }
 
-  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      e.preventDefault()
-      submit()
-    }
-  }
+  const onKeyDown = onEnterKey<HTMLInputElement>((e) => {
+    e.preventDefault()
+    submit()
+  })
 
   const label = sectionLabel(section)
 
