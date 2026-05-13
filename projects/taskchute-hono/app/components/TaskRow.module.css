@@ -1,0 +1,131 @@
+.row {
+  display: grid;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-card);
+  border-radius: var(--radius-lg);
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+@media (min-width: 640px) {
+  .row {
+    grid-template-columns: 120px minmax(0, 1fr) 110px 120px minmax(220px, auto);
+  }
+}
+
+.rowDone {
+  background-color: color-mix(in oklab, var(--color-muted) 70%, white);
+  opacity: 0.7;
+}
+
+.rowInProgress {
+  background-color: color-mix(in oklab, var(--color-accent) 60%, white);
+  border-color: var(--color-accent-border);
+}
+
+.status {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.time {
+  font-size: 0.75rem;
+  color: var(--color-muted-foreground);
+}
+
+.titleCell {
+  min-width: 0;
+}
+
+.titleButton {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+.titleButton:hover {
+  text-decoration: underline;
+}
+
+.titleDone {
+  text-decoration: line-through;
+}
+
+.titleDone:hover {
+  text-decoration: line-through underline;
+}
+
+.routineLabel {
+  margin-top: 0.125rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.6875rem;
+  color: var(--color-muted-foreground);
+}
+
+.routineLabel :global(svg) {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+.estimate {
+  font-size: 0.8125rem;
+}
+
+.estimateInputWrap {
+  position: relative;
+}
+
+.estimateInputWrap input {
+  height: 2rem;
+  font-size: 0.8125rem;
+  padding-right: 2rem;
+}
+
+.estimateUnit {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--color-muted-foreground);
+  pointer-events: none;
+}
+
+.actual {
+  font-size: 0.8125rem;
+  color: var(--color-muted-foreground);
+}
+
+.actualOver {
+  color: var(--color-negative-fg);
+}
+
+.actualUnder {
+  color: var(--color-positive-fg);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.375rem;
+}
+
+.editInput {
+  height: 2rem;
+  font-size: 0.8125rem;
+  width: 100%;
+}
