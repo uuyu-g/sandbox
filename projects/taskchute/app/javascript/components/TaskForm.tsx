@@ -18,7 +18,7 @@ export default function TaskForm({ date }: Props) {
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (!title.trim() || submitting) return
+    if (submitting) return
     setSubmitting(true)
     router.post(
       '/tasks',
@@ -49,8 +49,7 @@ export default function TaskForm({ date }: Props) {
           id="task-title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="新しいタスク"
-          required
+          placeholder="新しいタスク（後で入力可）"
         />
       </div>
       <div className={styles.field}>
@@ -78,7 +77,7 @@ export default function TaskForm({ date }: Props) {
         />
       </div>
       <div>
-        <Button type="submit" disabled={!title.trim() || submitting}>
+        <Button type="submit" disabled={submitting}>
           {submitting ? <Loader2 className={styles.spin} /> : <Plus />}
           追加
         </Button>

@@ -15,6 +15,7 @@ class TasksController < ApplicationController
 
   def create
     task = Task.new(task_params)
+    task.title ||= ""
     task.scheduled_on ||= Date.current
     task.position ||= next_position_for(task.scheduled_on, task.section)
     if task.save
