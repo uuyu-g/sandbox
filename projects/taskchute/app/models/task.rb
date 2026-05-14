@@ -11,6 +11,15 @@ class Task < ApplicationRecord
   scope :for_date, ->(date) { where(scheduled_on: date) }
   scope :ordered, -> { order(:section, :position, :id) }
 
+  def self.section_for_time(time)
+    hour = time.hour
+    case hour
+    when 4..10 then "morning"
+    when 11..16 then "noon"
+    else "night"
+    end
+  end
+
   def actual_minutes
     return nil unless started_at && finished_at
     ((finished_at - started_at) / 60.0).round
