@@ -1,41 +1,26 @@
 import React, { useState } from 'react'
 import { router } from '@inertiajs/react'
-import { Loader2, Plus } from 'lucide-react'
+import { Loader2, Play } from 'lucide-react'
 
 import { Button } from '@/components/ui/Button'
-import { SECTIONS, type SectionValue } from '@/lib/format'
 import styles from './TaskForm.module.css'
 
-interface Props {
-  date: string
-}
-
-export default function TaskForm({ date }: Props) {
+export default function TaskForm() {
   const [title, setTitle] = useState('')
-  const [section, setSection] = useState<SectionValue>(SECTIONS[0].value)
-  const [estimate, setEstimate] = useState('15')
   const [submitting, setSubmitting] = useState(false)
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (!title.trim() || submitting) return
+    if (submitting) return
     setSubmitting(true)
     router.post(
-      '/tasks',
-      {
-        task: {
-          title: title.trim(),
-          section,
-          estimate_minutes: parseInt(estimate, 10) || 0,
-          scheduled_on: date,
-        },
-      },
+      '/tasks/start_now',
+      { task: { title: title.trim() } },
       {
         preserveScroll: true,
         onFinish: () => {
           setSubmitting(false)
           setTitle('')
-          setEstimate('15')
         },
       },
     )
@@ -44,43 +29,18 @@ export default function TaskForm({ date }: Props) {
   return (
     <form onSubmit={submit} className={styles.form}>
       <div className={styles.field}>
-        <label htmlFor="task-title">タイトル</label>
+        <label htmlFor="task-title">タイトル（任意）</label>
         <input
           id="task-title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="新しいタスク"
-          required
-        />
-      </div>
-      <div className={styles.field}>
-        <label htmlFor="task-section">セクション</label>
-        <select
-          id="task-section"
-          value={section}
-          onChange={(e) => setSection(e.target.value as SectionValue)}
-        >
-          {SECTIONS.map((s) => (
-            <option key={s.value} value={s.value}>
-              {s.label}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className={styles.field}>
-        <label htmlFor="task-estimate">見積(分)</label>
-        <input
-          id="task-estimate"
-          type="number"
-          min={0}
-          value={estimate}
-          onChange={(e) => setEstimate(e.target.value)}
+          placeholder="いま始める作業"
         />
       </div>
       <div>
-        <Button type="submit" disabled={!title.trim() || submitting}>
-          {submitting ? <Loader2 className={styles.spin} /> : <Plus />}
-          追加
+        <Button type="submit" disabled={submitting}>
+          {submitting ? <Loader2 className={styles.spin} /> : <Play />}
+          いま開始
         </Button>
       </div>
     </form>

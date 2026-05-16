@@ -100,7 +100,7 @@ export default function Today({ date, tasks, summary }: TodayProps) {
 
       {flash?.notice && <div className={styles.notice}>{flash.notice}</div>}
 
-      <TaskForm date={date} />
+      <TaskForm />
 
       <div className={styles.summaryGrid}>
         <SummaryCard label="タスク" value={`${summary.done_count} / ${summary.total_count}`} />

@@ -43,6 +43,33 @@ class TasksController < ApplicationController
     redirect_to tasks_path(date: @task.scheduled_on.iso8601)
   end
 
+  def start_now
+    now = Time.current
+    today = now.to_date
+    section = Task.section_for_time(now)
+
+    Task.transaction do
+      Task.for_date(today).where.not(started_at: nil).where(finished_at: nil).find_each do |t|
+        t.update!(finished_at: now, done: true)
+      end
+
+      title = params.dig(:task, :title).to_s.strip
+      title = "無題のタスク" if title.blank?
+
+      task = Task.new(
+        title: title,
+        section: section,
+        scheduled_on: today,
+        estimate_minutes: 0,
+        started_at: now,
+      )
+      task.position = next_position_for(today, section)
+      task.save!
+    end
+
+    redirect_to tasks_path(date: today.iso8601)
+  end
+
   def finish
     @task.started_at ||= Time.current
     @task.finished_at = Time.current

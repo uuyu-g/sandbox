@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     end
     collection do
       patch :reorder
+      post :start_now
     end
   end
 
