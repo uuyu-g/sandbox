@@ -1,0 +1,114 @@
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.dateNav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dateInput {
+  height: 2rem;
+  width: 11rem;
+  font-size: 0.8125rem;
+}
+
+.notice {
+  margin-bottom: 1rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-accent);
+  color: var(--color-accent-foreground);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8125rem;
+}
+
+.summaryGrid {
+  display: grid;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .summaryGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 960px) {
+  .summaryGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.summaryCard {
+  border: 1px solid var(--color-border);
+  background-color: var(--color-card);
+  border-radius: var(--radius-lg);
+  padding: 1rem;
+}
+
+.summaryLabel {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-muted-foreground);
+}
+
+.summaryValue {
+  margin-top: 0.25rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.summaryValuePositive {
+  color: var(--color-positive-fg);
+}
+
+.summaryValueNegative {
+  color: var(--color-negative-fg);
+}
+
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.sectionHeader {
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.sectionTitle {
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.sectionCount {
+  font-size: 0.75rem;
+  color: var(--color-muted-foreground);
+}
+
+.empty {
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.8125rem;
+  color: var(--color-muted-foreground);
+}
+
+.taskList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
