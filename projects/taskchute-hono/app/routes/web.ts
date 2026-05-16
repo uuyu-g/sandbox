@@ -5,7 +5,7 @@ import { z } from 'zod'
 import { makeDb } from '@/db/client'
 import { SECTIONS } from '@/db/schema'
 import type { AppEnv } from '@/env'
-import { parseIsoDate, todayIso } from '@/lib/date'
+import { parseIsoDate, sectionForTime, todayIso } from '@/lib/date'
 import { routinePayload } from '@/lib/payloads'
 import * as Routines from '@/services/routines'
 import * as Tasks from '@/services/tasks'
@@ -63,6 +63,14 @@ const expandSchema = z.object({
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
 })
 
+const startNowSchema = z.object({
+  task: z
+    .object({
+      title: z.string().optional(),
+    })
+    .optional(),
+})
+
 const withDate = (path: string, date: string, extra?: Record<string, string>): string => {
   const params = new URLSearchParams({ date, ...(extra ?? {}) })
   return `${path}?${params.toString()}`
@@ -92,6 +100,16 @@ web.post('/tasks', zValidator('json', taskCreateSchema), async (c) => {
   const fallbackDate = todayIso(c.env.DEFAULT_TZ)
   const row = await Tasks.createTask(db, task, now, fallbackDate)
   return c.redirect(withDate('/', row.scheduledOn), 303)
+})
+
+web.post('/tasks/start_now', zValidator('json', startNowSchema), async (c) => {
+  const db = makeDb(c.env.DB)
+  const now = new Date()
+  const date = todayIso(c.env.DEFAULT_TZ)
+  const section = sectionForTime(now, c.env.DEFAULT_TZ)
+  const title = c.req.valid('json').task?.title ?? ''
+  await Tasks.startNowTask(db, date, section, title, now)
+  return c.redirect(withDate('/', date), 303)
 })
 
 web.patch('/tasks/reorder', zValidator('json', reorderSchema), async (c) => {

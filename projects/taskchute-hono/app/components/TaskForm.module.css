@@ -6,7 +6,7 @@
 
 @media (min-width: 640px) {
   .form {
-    grid-template-columns: minmax(0, 1fr) 140px 110px auto;
+    grid-template-columns: minmax(0, 1fr) auto;
     align-items: end;
   }
 }

@@ -4,7 +4,7 @@ import { Repeat, RotateCcw, X } from 'lucide-react'
 
 import { Button } from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
-import { cx } from '@/lib/utils'
+import { cx, onEnterKey } from '@/lib/utils'
 import { formatMinutes, formatTime } from '@/lib/format'
 import styles from './TaskRow.module.css'
 
@@ -80,7 +80,7 @@ export default function TaskRow({ task }: { task: Task }) {
             className={styles.editInput}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && saveEdit()}
+            onKeyDown={onEnterKey(() => saveEdit())}
             autoFocus
           />
         ) : (
