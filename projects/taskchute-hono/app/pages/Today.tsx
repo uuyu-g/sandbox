@@ -2,11 +2,12 @@ import React, { useMemo } from 'react'
 import { Head, router, usePage } from '@inertiajs/react'
 import { CalendarDays, ChevronLeft, ChevronRight, Repeat } from 'lucide-react'
 
+import SectionInlineTaskInput from '@/components/SectionInlineTaskInput'
 import TaskForm from '@/components/TaskForm'
 import TaskRow, { type Task } from '@/components/TaskRow'
 import { Button } from '@/components/ui/Button'
 import { cx } from '@/lib/utils'
-import { SECTIONS, formatMinutes, sectionLabel, type SectionValue } from '@/lib/format'
+import { SECTIONS, formatMinutes, type SectionValue } from '@/lib/format'
 import styles from './Today.module.css'
 
 interface Summary {
@@ -99,7 +100,7 @@ export default function Today({ date, tasks, summary }: TodayProps) {
 
       {flash?.notice && <div className={styles.notice}>{flash.notice}</div>}
 
-      <TaskForm date={date} />
+      <TaskForm />
 
       <div className={styles.summaryGrid}>
         <SummaryCard label="タスク" value={`${summary.done_count} / ${summary.total_count}`} />
@@ -121,17 +122,12 @@ export default function Today({ date, tasks, summary }: TodayProps) {
                 {grouped[s.value as SectionValue].length} 件
               </p>
             </div>
-            {grouped[s.value as SectionValue].length === 0 ? (
-              <div className={styles.empty}>
-                {sectionLabel(s.value)} のタスクはまだありません
-              </div>
-            ) : (
-              <div className={styles.taskList}>
-                {grouped[s.value as SectionValue].map((t) => (
-                  <TaskRow key={t.id} task={t} />
-                ))}
-              </div>
-            )}
+            <div className={styles.taskList}>
+              {grouped[s.value as SectionValue].map((t) => (
+                <TaskRow key={t.id} task={t} />
+              ))}
+              <SectionInlineTaskInput date={date} section={s.value as SectionValue} />
+            </div>
           </section>
         ))}
       </div>

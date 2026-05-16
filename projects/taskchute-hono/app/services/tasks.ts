@@ -1,4 +1,4 @@
-import { and, asc, eq, max, sql } from 'drizzle-orm'
+import { and, asc, eq, isNotNull, isNull, max, sql } from 'drizzle-orm'
 import type { Db } from '@/db/client'
 import { type Section, SECTIONS, tasks, type TaskRow } from '@/db/schema'
 import { type TaskPayload, taskPayload } from '@/lib/payloads'
@@ -123,6 +123,46 @@ export const resetTask = async (db: Db, id: number, now: Date): Promise<TaskRow 
     .where(eq(tasks.id, id))
     .returning()
     .get()
+
+export const startNowTask = async (
+  db: Db,
+  date: string,
+  section: Section,
+  rawTitle: string,
+  now: Date,
+): Promise<TaskRow> => {
+  const finishStmt = db
+    .update(tasks)
+    .set({ finishedAt: now, done: true, updatedAt: now })
+    .where(
+      and(
+        eq(tasks.scheduledOn, date),
+        isNotNull(tasks.startedAt),
+        isNull(tasks.finishedAt),
+      ),
+    )
+
+  const title = rawTitle.trim() || '無題のタスク'
+  const position = await nextPositionForSection(db, date, section)
+  const insertStmt = db
+    .insert(tasks)
+    .values({
+      title,
+      section,
+      estimateMinutes: 0,
+      position,
+      scheduledOn: date,
+      startedAt: now,
+      done: false,
+      createdAt: now,
+      updatedAt: now,
+    })
+    .returning()
+
+  const results = await db.batch([finishStmt, insertStmt])
+  const inserted = results[1] as TaskRow[]
+  return inserted[0]
+}
 
 export type ReorderItem = { id: number; section: Section; position: number }
 
