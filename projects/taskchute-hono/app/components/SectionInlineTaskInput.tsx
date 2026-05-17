@@ -52,7 +52,7 @@ export default function SectionInlineTaskInput({ date, section }: Props) {
   const label = sectionLabel(section)
 
   return (
-    <form data-inline-input onSubmit={submit}>
+    <form className="inline-input" onSubmit={submit}>
       <input
         ref={titleRef}
         type="text"
@@ -63,7 +63,7 @@ export default function SectionInlineTaskInput({ date, section }: Props) {
         disabled={submitting}
         aria-label={`${label} の新規タスクのタイトル`}
       />
-      <span data-input-wrap>
+      <span className="input-wrap">
         <input
           type="number"
           min={0}
@@ -73,7 +73,7 @@ export default function SectionInlineTaskInput({ date, section }: Props) {
           disabled={submitting}
           aria-label={`${label} の新規タスクの見積分`}
         />
-        <span data-unit>分</span>
+        <span className="unit">分</span>
       </span>
     </form>
   )

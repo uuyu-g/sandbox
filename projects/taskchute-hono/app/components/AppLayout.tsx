@@ -14,7 +14,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div data-app>
+    <div className="app">
       <header>
         <hgroup>
           <h1>TaskChute</h1>

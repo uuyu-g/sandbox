@@ -101,7 +101,7 @@ export default function Routines({ routines }: RoutinesProps) {
     <>
       <Head title="TaskChute - ルーチン" />
 
-      <header data-stack="true">
+      <header>
         <hgroup>
           <h2>ルーチン</h2>
           <p>
@@ -116,7 +116,7 @@ export default function Routines({ routines }: RoutinesProps) {
 
       {flash?.notice && <div role="status">{flash.notice}</div>}
 
-      <form data-routine-form onSubmit={submitNew}>
+      <form className="routine-form" onSubmit={submitNew}>
         <p>
           <label htmlFor="routine-title">タイトル</label>
           <input
@@ -155,7 +155,7 @@ export default function Routines({ routines }: RoutinesProps) {
         <Button type="submit" disabled={!draft.title.trim()}>
           追加
         </Button>
-        <div data-full="true">
+        <div className="full">
           <label>繰り返す曜日</label>
           <WeekdayPicker
             value={draft.weekdays}
@@ -164,13 +164,13 @@ export default function Routines({ routines }: RoutinesProps) {
         </div>
       </form>
 
-      <div data-routine-list>
+      <div className="routine-list">
         {routines.length === 0 && (
-          <p data-empty>ルーチンはまだありません。上のフォームから追加できます。</p>
+          <p className="empty">ルーチンはまだありません。上のフォームから追加できます。</p>
         )}
         {routines.map((r) =>
           editing?.id === r.id ? (
-            <article key={r.id} data-routine-row data-editing="true">
+            <article key={r.id} className="routine-row" data-editing="true">
               <p>
                 <label htmlFor={`edit-title-${editing.id}`}>タイトル</label>
                 <input
@@ -214,14 +214,14 @@ export default function Routines({ routines }: RoutinesProps) {
               <Button size="icon" variant="ghost" onClick={() => setEditing(null)}>
                 <X />
               </Button>
-              <div data-full="true">
-                <label data-weekdays-label>繰り返す曜日</label>
+              <div className="full">
+                <label>繰り返す曜日</label>
                 <WeekdayPicker
                   value={editing.weekdays}
                   onChange={(weekdays) => setEditing({ ...editing, weekdays })}
                 />
               </div>
-              <div data-active-row>
+              <div className="active-row">
                 <input
                   id={`active-${editing.id}`}
                   type="checkbox"
@@ -255,11 +255,11 @@ function RoutineRow({
   onDelete: () => void
 }) {
   return (
-    <article data-routine-row data-active={routine.active ? 'true' : 'false'}>
+    <article className="routine-row" data-active={routine.active ? 'true' : 'false'}>
       <Badge variant="muted">{sectionLabel(routine.section)}</Badge>
-      <div data-title>{routine.title}</div>
-      <div data-estimate>{formatMinutes(routine.estimate_minutes)}</div>
-      <div data-weekday-chips>
+      <div className="title">{routine.title}</div>
+      <div className="estimate">{formatMinutes(routine.estimate_minutes)}</div>
+      <div className="weekday-chips">
         {WEEKDAYS.map((w) => {
           const on = routine.weekdays.includes(w.value)
           return (
@@ -293,7 +293,7 @@ function WeekdayPicker({
     else onChange([...value, w].sort((a, b) => a - b))
   }
   return (
-    <div data-weekday-picker>
+    <div className="weekday-picker">
       {WEEKDAYS.map((w) => {
         const on = value.includes(w.value)
         return (

@@ -26,7 +26,7 @@ export default function TaskForm() {
   }
 
   return (
-    <form data-task-form onSubmit={submit}>
+    <form className="task-form" onSubmit={submit}>
       <p>
         <label htmlFor="task-title">タイトル（任意）</label>
         <input
@@ -38,7 +38,7 @@ export default function TaskForm() {
       </p>
       <div>
         <Button type="submit" disabled={submitting}>
-          {submitting ? <Loader2 data-spin /> : <Play />}
+          {submitting ? <Loader2 className="spin" /> : <Play />}
           いま開始
         </Button>
       </div>

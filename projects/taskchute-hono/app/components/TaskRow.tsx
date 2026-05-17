@@ -63,15 +63,15 @@ export default function TaskRow({ task }: { task: Task }) {
     delta == null ? 'neutral' : delta > 0 ? 'over' : delta < 0 ? 'under' : 'neutral'
 
   return (
-    <article data-task-row data-status={status}>
-      <div data-status-cell>
+    <article className="task-row" data-status={status}>
+      <div className="status">
         {statusBadge}
         <time>
           {formatTime(task.started_at)} → {formatTime(task.finished_at)}
         </time>
       </div>
 
-      <div data-title-cell>
+      <div className="title">
         {editing ? (
           <input
             value={title}
@@ -80,12 +80,7 @@ export default function TaskRow({ task }: { task: Task }) {
             autoFocus
           />
         ) : (
-          <button
-            type="button"
-            data-edit-trigger
-            onClick={() => setEditing(true)}
-            title="クリックで編集"
-          >
+          <button type="button" onClick={() => setEditing(true)} title="クリックで編集">
             {task.title}
           </button>
         )}
@@ -97,23 +92,23 @@ export default function TaskRow({ task }: { task: Task }) {
         )}
       </div>
 
-      <div data-estimate>
+      <div className="estimate">
         {editing ? (
-          <span data-input-wrap>
+          <span className="input-wrap">
             <input
               type="number"
               min={0}
               value={estimate}
               onChange={(e) => setEstimate(e.target.value)}
             />
-            <span data-unit>分</span>
+            <span className="unit">分</span>
           </span>
         ) : (
           <span>見積 {formatMinutes(task.estimate_minutes)}</span>
         )}
       </div>
 
-      <div data-actual data-tone={actualTone}>
+      <div className="actual" data-tone={actualTone}>
         実績{' '}
         {actual == null
           ? '-'

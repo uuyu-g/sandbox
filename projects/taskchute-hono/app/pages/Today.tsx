@@ -99,7 +99,7 @@ export default function Today({ date, tasks, summary }: TodayProps) {
 
       <TaskForm />
 
-      <aside data-summary>
+      <aside className="summary">
         <SummaryCard label="タスク" value={`${summary.done_count} / ${summary.total_count}`} />
         <SummaryCard label="見積合計" value={formatMinutes(summary.estimate)} />
         <SummaryCard label="実績合計" value={formatMinutes(summary.actual)} />
@@ -110,14 +110,14 @@ export default function Today({ date, tasks, summary }: TodayProps) {
         />
       </aside>
 
-      <div data-sections>
+      <div className="sections">
         {SECTIONS.map((s) => (
           <section key={s.value}>
             <header>
               <h2>{s.label}</h2>
               <p>{grouped[s.value as SectionValue].length} 件</p>
             </header>
-            <div data-task-list>
+            <div className="task-list">
               {grouped[s.value as SectionValue].map((t) => (
                 <TaskRow key={t.id} task={t} />
               ))}
