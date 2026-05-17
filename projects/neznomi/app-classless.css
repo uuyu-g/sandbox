@@ -467,36 +467,31 @@ label:has(> input[type="checkbox"]:not(.switch):checked) {
 /* ---------------------------------------------------------
    4.2 Toggle Switch
    --------------------------------------------------------- */
+/*
+ * Switch — thumb is rendered as a background-image (SVG) and slid with
+ * `background-position` instead of an ::after pseudo-element. This avoids an
+ * iOS Safari quirk where absolutely-positioned pseudo-elements on form
+ * controls can drift vertically off-center.
+ */
 input[type="checkbox"].switch {
   width: 40px;
   height: 24px;
   min-width: 40px;
-  background: var(--border);
+  background-color: var(--border);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Ccircle cx='10' cy='10' r='10' fill='white'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 20px 20px;
+  background-position: 2px center;
   border: none;
   border-radius: 999px;
   vertical-align: middle;
-
-  &::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 2px;
-    width: 20px;
-    height: 20px;
-    background: #ffffff;
-    border-radius: 50%;
-    box-shadow: 0 1px 2px rgb(0 0 0 / 0.25);
-    transform: translateY(-50%);
-    transition: left var(--transition), background var(--transition);
-    clip-path: none;
-    inset: auto;
-  }
+  transition:
+    background-color var(--transition),
+    background-position var(--transition);
 
   &:checked {
-    background: var(--success);
-    border-color: var(--success);
-
-    &::after { left: 18px; background: #ffffff; }
+    background-color: var(--success);
+    background-position: 18px center;
   }
 }
 
