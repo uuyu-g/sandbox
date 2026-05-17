@@ -1,0 +1,748 @@
+/* neznomi — Semantic App CSS v1.0 (classless / structure-driven) */
+
+:root {
+  color-scheme: light dark;
+
+  --bg: #ffffff;
+  --text: #1a1a1a;
+  --text-muted: #6b7280;
+  --surface: #f7f8fa;
+  --border: #e5e7eb;
+
+  --primary: #3b82f6;
+  --primary-text: #ffffff;
+  --success: #10b981;
+  --success-text: #ffffff;
+  --warning: #f59e0b;
+  --warning-text: #1a1a1a;
+  --danger: #ef4444;
+  --danger-text: #ffffff;
+
+  --radius: 8px;
+  --focus-ring: 0 0 0 3px rgb(59 130 246 / 0.35);
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 1px 3px rgb(0 0 0 / 0.06);
+  --transition: 0.2s ease;
+
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f1115;
+    --text: #e5e7eb;
+    --text-muted: #9ca3af;
+    --surface: #171a21;
+    --border: #2a2f3a;
+
+    --primary: #60a5fa;
+    --primary-text: #0b1220;
+    --success: #34d399;
+    --success-text: #06281f;
+    --warning: #fbbf24;
+    --warning-text: #2b1d04;
+    --danger: #f87171;
+    --danger-text: #2b0d0d;
+
+    --focus-ring: 0 0 0 3px rgb(96 165 250 / 0.4);
+    --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 1px 3px rgb(0 0 0 / 0.5);
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ---------------------------------------------------------
+   3.1 Container variants
+   --------------------------------------------------------- */
+.container {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding: 1.5rem;
+
+  &.fluid {
+    max-width: none;
+    width: 100%;
+  }
+
+  &.app {
+    max-width: none;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: auto 1fr;
+
+    > header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.75rem 1rem;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+
+    > .body,
+    > body {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      min-height: 0;
+      overflow: hidden;
+
+      > aside {
+        background: var(--surface);
+        border-right: 1px solid var(--border);
+        padding: 1rem;
+        overflow-y: auto;
+        min-width: 0;
+      }
+
+      > main {
+        padding: 1.5rem;
+        overflow-y: auto;
+        min-width: 0;
+      }
+
+      @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+
+        > aside {
+          border-right: none;
+          border-bottom: 1px solid var(--border);
+        }
+      }
+    }
+  }
+}
+
+/* ---------------------------------------------------------
+   3.2 Form layout — auto inline / stack
+   --------------------------------------------------------- */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 0;
+
+  /* Inline form: no block-level children → row */
+  &:not(:has(> p, > div, > fieldset, > section, > .stack, > ul, > ol)) {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+
+    > :is(input, select, textarea) { flex: 1 1 auto; min-width: 0; width: auto; }
+    > button { flex: 0 0 auto; }
+  }
+
+  /* Stack form: last block holding buttons → right-aligned action row */
+  > :is(p, div):last-child:has(> button) {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+  }
+}
+
+fieldset {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem 1rem;
+  margin: 0;
+}
+
+legend {
+  padding: 0 0.4rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+/* ---------------------------------------------------------
+   3.3 Stack & Card
+   --------------------------------------------------------- */
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+
+  /* Direct child .card / li is auto-row */
+  > .card,
+  > li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    > button:last-child { margin-left: auto; }
+  }
+}
+
+.card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  box-shadow: var(--shadow);
+
+  &.primary { border-color: var(--primary); }
+  &.success { border-color: var(--success); }
+  &.warning { border-color: var(--warning); }
+  &.danger  { border-color: var(--danger); }
+}
+
+/* ---------------------------------------------------------
+   4.1 Typography
+   --------------------------------------------------------- */
+h1, h2, h3, h4, h5, h6 {
+  margin: 0 0 0.5rem;
+  line-height: 1.25;
+  font-weight: 700;
+  color: var(--text);
+}
+
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.25rem; }
+h4 { font-size: 1.125rem; }
+h5 { font-size: 1rem; }
+h6 { font-size: 0.875rem; }
+
+p { margin: 0 0 0.75rem; }
+
+:where(*:first-child) { margin-top: 0; }
+:where(p, h1, h2, h3, h4, h5, h6):last-child { margin-bottom: 0; }
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color var(--transition), text-decoration-color var(--transition);
+
+  &:hover { text-decoration: underline; }
+  &:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+    border-radius: 2px;
+  }
+}
+
+small { color: var(--text-muted); font-size: 0.875rem; }
+
+header h1 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+aside :is(h2, h3) {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 1rem 0 0.5rem;
+}
+
+.card :is(h3, h4) {
+  font-size: 1.125rem;
+  margin-bottom: 0.5rem;
+}
+
+/* ---------------------------------------------------------
+   4.2 Buttons
+   --------------------------------------------------------- */
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  appearance: none;
+  -webkit-appearance: none;
+  font: inherit;
+  min-height: 40px;
+  padding: 0.5rem 1rem;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition:
+    background var(--transition),
+    border-color var(--transition),
+    color var(--transition),
+    box-shadow var(--transition),
+    filter var(--transition);
+
+  &:hover:not(:disabled) { background: var(--surface); }
+  &:active:not(:disabled) { filter: brightness(0.96); }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+
+  &:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  &.primary {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: var(--primary-text);
+    &:hover:not(:disabled) { background: var(--primary); filter: brightness(1.06); }
+  }
+  &.success {
+    background: var(--success);
+    border-color: var(--success);
+    color: var(--success-text);
+    &:hover:not(:disabled) { background: var(--success); filter: brightness(1.06); }
+  }
+  &.warning {
+    background: var(--warning);
+    border-color: var(--warning);
+    color: var(--warning-text);
+    &:hover:not(:disabled) { background: var(--warning); filter: brightness(1.06); }
+  }
+  &.danger {
+    background: var(--danger);
+    border-color: var(--danger);
+    color: var(--danger-text);
+    &:hover:not(:disabled) { background: var(--danger); filter: brightness(1.06); }
+  }
+}
+
+/* ---------------------------------------------------------
+   4.2 Inputs / Select / Textarea
+   --------------------------------------------------------- */
+input:not([type="checkbox"]):not([type="radio"]):not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="range"]):not([type="file"]):not([type="color"]),
+select,
+textarea {
+  font: inherit;
+  min-height: 40px;
+  padding: 0.5rem 0.75rem;
+  width: 100%;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+
+  &::placeholder { color: var(--text-muted); }
+
+  &:focus-visible {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: var(--focus-ring);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: var(--surface);
+  }
+
+  &[aria-invalid="true"] {
+    border-color: var(--danger);
+    background: color-mix(in srgb, var(--danger) 8%, var(--bg));
+
+    &:focus-visible {
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger) 35%, transparent);
+    }
+  }
+}
+
+textarea {
+  min-height: 6rem;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+select {
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),
+    linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
+  background-position:
+    calc(100% - 18px) calc(50% - 2px),
+    calc(100% - 12px) calc(50% - 2px);
+  background-size: 6px 6px;
+  background-repeat: no-repeat;
+  padding-right: 2rem;
+}
+
+label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text);
+  transition: color var(--transition), text-decoration-color var(--transition);
+}
+
+/* ---------------------------------------------------------
+   4.2 Checkbox / Radio
+   --------------------------------------------------------- */
+input[type="checkbox"],
+input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  margin: 0;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  vertical-align: middle;
+  transition: background var(--transition), border-color var(--transition);
+
+  &:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+}
+
+input[type="radio"] { border-radius: 50%; }
+
+input[type="checkbox"]:not(.switch):checked,
+input[type="radio"]:checked {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+input[type="checkbox"]:not(.switch):checked::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--primary-text);
+  clip-path: polygon(14% 47%, 0 60%, 40% 100%, 100% 22%, 87% 12%, 38% 76%);
+}
+
+input[type="radio"]:checked::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  background: var(--primary-text);
+  border-radius: 50%;
+}
+
+/* Task complete: tone-down + line-through on the related label */
+input[type="checkbox"]:not(.switch):checked + label,
+label:has(> input[type="checkbox"]:not(.switch):checked) {
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
+/* ---------------------------------------------------------
+   4.2 Toggle Switch
+   --------------------------------------------------------- */
+input[type="checkbox"].switch {
+  width: 40px;
+  height: 24px;
+  min-width: 40px;
+  background: var(--border);
+  border: none;
+  border-radius: 999px;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    background: #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.25);
+    transition: left var(--transition), background var(--transition);
+    clip-path: none;
+    inset: auto;
+  }
+
+  &:checked {
+    background: var(--success);
+    border-color: var(--success);
+
+    &::after { left: 18px; background: #ffffff; }
+  }
+}
+
+/* Override task-complete styling for switch labels */
+input[type="checkbox"].switch:checked + label,
+label:has(> input[type="checkbox"].switch:checked) {
+  color: var(--text);
+  text-decoration: none;
+}
+
+/* ---------------------------------------------------------
+   Tooltip
+   --------------------------------------------------------- */
+[data-tooltip] {
+  position: relative;
+
+  &::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    background: #111827;
+    color: #f9fafb;
+    font-size: 0.75rem;
+    line-height: 1.3;
+    padding: 0.35rem 0.6rem;
+    border-radius: 4px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 100;
+    transition: opacity var(--transition), transform var(--transition);
+  }
+
+  &:hover::after,
+  &:focus-visible::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* ---------------------------------------------------------
+   Accordion (details / summary)
+   --------------------------------------------------------- */
+details {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0 1rem;
+  margin: 0 0 0.5rem;
+
+  > summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 0.75rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    font-weight: 600;
+    color: var(--text);
+
+    &::-webkit-details-marker { display: none; }
+
+    &::after {
+      content: "➔";
+      color: var(--text-muted);
+      transition: transform var(--transition);
+      flex: 0 0 auto;
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--focus-ring);
+      border-radius: 4px;
+    }
+  }
+
+  &[open] {
+    > summary::after { transform: rotate(90deg); }
+    > :not(summary):last-child { padding-bottom: 1rem; }
+  }
+}
+
+/* ---------------------------------------------------------
+   Tabs (WAI-ARIA driven)
+   --------------------------------------------------------- */
+[role="tablist"] {
+  display: flex;
+  gap: 0.25rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1rem;
+}
+
+[role="tab"] {
+  appearance: none;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 0.5rem 0.9rem;
+  font: inherit;
+  color: var(--text-muted);
+  cursor: pointer;
+  min-height: 40px;
+  transition: color var(--transition), border-color var(--transition);
+
+  &:hover { color: var(--text); }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+    border-radius: 4px 4px 0 0;
+  }
+
+  &[aria-selected="true"] {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+    font-weight: 600;
+  }
+
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+}
+
+[role="tabpanel"][hidden] { display: none; }
+
+/* ---------------------------------------------------------
+   Dialog (Modal)
+   --------------------------------------------------------- */
+dialog {
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) * 1.5);
+  padding: 1.25rem 1.5rem;
+  max-width: min(90vw, 540px);
+  width: 100%;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 0.2);
+
+  &::backdrop {
+    background: rgb(0 0 0 / 0.4);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+
+  &[open] {
+    animation: neznomi-dialog-in 0.2s ease both;
+    &::backdrop { animation: neznomi-backdrop-in 0.2s ease both; }
+  }
+
+  > header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: -0.25rem 0 0.75rem;
+    padding: 0;
+    background: transparent;
+    border: none;
+  }
+
+  > header :is(h1, h2, h3) {
+    font-size: 1.125rem;
+    margin: 0;
+  }
+
+  > form { margin: 0; gap: 0.75rem; }
+  > :last-child { margin-bottom: 0; }
+}
+
+@keyframes neznomi-dialog-in {
+  from { opacity: 0; transform: scale(0.96) translateY(4px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes neznomi-backdrop-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ---------------------------------------------------------
+   Tables
+   --------------------------------------------------------- */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+
+  th, td {
+    text-align: left;
+    padding: 0.55rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  thead th {
+    background: var(--surface);
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  tbody tr:last-child :is(th, td) { border-bottom: none; }
+  tbody tr:hover { background: var(--surface); }
+}
+
+/* ---------------------------------------------------------
+   Code & misc
+   --------------------------------------------------------- */
+code, kbd, samp, pre {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+code {
+  background: var(--surface);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+}
+
+kbd {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  padding: 0.05em 0.4em;
+  font-size: 0.8em;
+}
+
+pre {
+  background: var(--surface);
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius);
+  overflow-x: auto;
+
+  > code { background: transparent; padding: 0; }
+}
+
+blockquote {
+  margin: 0 0 0.75rem;
+  padding: 0.25rem 0 0.25rem 1rem;
+  border-left: 3px solid var(--border);
+  color: var(--text-muted);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 1rem 0;
+}
+
+img, video, svg, canvas { max-width: 100%; height: auto; }
+
+::selection { background: color-mix(in srgb, var(--primary) 30%, transparent); }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+  background-clip: padding-box;
+  border: 2px solid transparent;
+}
