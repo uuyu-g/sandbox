@@ -39,6 +39,22 @@ jobs:
           date -u +"%Y-%m-%dT%H:%M:%SZ" > _site/.built-at
           touch _site/.nojekyll
 
+      - name: Preserve existing previews from gh-pages
+        run: |
+          set -eu
+          # force_orphan: true on deploy wipes everything; pull the existing
+          # preview/ tree from gh-pages back into _site so PR previews survive.
+          if git fetch origin gh-pages --depth=1 2>/dev/null; then
+            if git ls-tree -d --name-only origin/gh-pages preview >/dev/null 2>&1; then
+              git archive --format=tar origin/gh-pages -- preview | tar -x -C _site
+              echo "Restored existing preview/ from gh-pages."
+            else
+              echo "No preview/ found on gh-pages; skipping."
+            fi
+          else
+            echo "gh-pages branch does not exist yet; skipping."
+          fi
+
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:

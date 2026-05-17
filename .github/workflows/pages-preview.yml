@@ -1,0 +1,72 @@
+name: Deploy GitHub Pages Preview
+
+on:
+  push:
+    branches:
+      - 'claude/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pages-preview-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Compute preview path
+        id: path
+        run: |
+          set -eu
+          BRANCH="${GITHUB_REF#refs/heads/}"
+          # destination_dir keeps the original branch name (slashes become nested dirs)
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+          echo "dest=preview/$BRANCH" >> "$GITHUB_OUTPUT"
+
+      - name: Assemble preview site
+        run: |
+          set -eu
+          rm -rf _site
+          mkdir -p _site
+
+          # Preview index (branch-scoped) at the preview root
+          cp .github/pages/index.html _site/index.html
+
+          # neznomi: static HTML/CSS/JS — copy as-is to preserve relative paths
+          mkdir -p _site/neznomi
+          cp -R projects/neznomi/. _site/neznomi/
+
+          # 404 fallback reuses the index
+          cp _site/index.html _site/404.html
+
+          # Marker
+          date -u +"%Y-%m-%dT%H:%M:%SZ" > _site/.built-at
+          echo "${{ steps.path.outputs.branch }}" > _site/.branch
+          touch _site/.nojekyll
+
+      - name: Deploy preview to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site
+          publish_branch: gh-pages
+          destination_dir: ${{ steps.path.outputs.dest }}
+          keep_files: true
+          commit_message: "preview: ${{ steps.path.outputs.branch }} @ ${{ github.sha }}"
+
+      - name: Print preview URL
+        run: |
+          OWNER="${GITHUB_REPOSITORY_OWNER}"
+          REPO="${GITHUB_REPOSITORY#*/}"
+          URL="https://${OWNER}.github.io/${REPO}/${{ steps.path.outputs.dest }}/"
+          echo "Preview URL: ${URL}"
+          echo "### Preview URL" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Top: ${URL}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- neznomi showcase: ${URL}neznomi/example/index.html" >> "$GITHUB_STEP_SUMMARY"
+          echo "- neznomi app shell: ${URL}neznomi/example/app.html" >> "$GITHUB_STEP_SUMMARY"
