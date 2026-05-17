@@ -12,7 +12,11 @@ export function Button({
   variant = 'default',
   size = 'default',
   type = 'button',
+  className,
   ...props
 }: ButtonProps) {
-  return <button type={type} data-variant={variant} data-size={size} {...props} />
+  const classes = ['btn', `btn-${variant}`]
+  if (size !== 'default') classes.push(`btn-${size}`)
+  if (className) classes.push(className)
+  return <button type={type} className={classes.join(' ')} {...props} />
 }

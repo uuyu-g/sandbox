@@ -155,12 +155,14 @@ button:disabled {
   opacity: 0.5;
 }
 
-button[data-variant] {
+.btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.375rem;
   white-space: nowrap;
+  height: 2.25rem;
+  padding: 0 1rem;
   border-radius: var(--radius-sm);
   font-size: 0.875rem;
   font-weight: 500;
@@ -172,97 +174,92 @@ button[data-variant] {
     box-shadow 0.15s ease;
 }
 
-button[data-variant]:focus-visible {
+.btn:focus-visible {
   outline: none;
   box-shadow:
     0 0 0 2px var(--color-background),
     0 0 0 4px var(--color-ring);
 }
 
-button[data-variant] > svg {
+.btn > svg {
   width: 1rem;
   height: 1rem;
   flex-shrink: 0;
   pointer-events: none;
 }
 
-button[data-size="default"] {
-  height: 2.25rem;
-  padding: 0 1rem;
-}
-
-button[data-size="sm"] {
+.btn-sm {
   height: 2rem;
   padding: 0 0.75rem;
   font-size: 0.8125rem;
 }
 
-button[data-size="lg"] {
+.btn-lg {
   height: 2.5rem;
   padding: 0 1.5rem;
 }
 
-button[data-size="icon"] {
+.btn-icon {
   height: 2.25rem;
   width: 2.25rem;
   padding: 0;
 }
 
-button[data-size="icon-sm"] {
+.btn-icon-sm {
   height: 2rem;
   width: 2rem;
   padding: 0;
 }
 
-button[data-variant="default"] {
+.btn-default {
   background-color: var(--color-primary);
   color: var(--color-primary-foreground);
 }
 
-button[data-variant="default"]:hover:not(:disabled) {
+.btn-default:hover:not(:disabled) {
   background-color: color-mix(in oklab, var(--color-primary) 90%, white);
 }
 
-button[data-variant="outline"] {
+.btn-outline {
   background-color: var(--color-background);
   color: var(--color-foreground);
   border-color: var(--color-input);
 }
 
-button[data-variant="outline"]:hover:not(:disabled) {
+.btn-outline:hover:not(:disabled) {
   background-color: var(--color-muted);
 }
 
-button[data-variant="secondary"] {
+.btn-secondary {
   background-color: var(--color-secondary);
   color: var(--color-secondary-foreground);
 }
 
-button[data-variant="secondary"]:hover:not(:disabled) {
+.btn-secondary:hover:not(:disabled) {
   background-color: color-mix(in oklab, var(--color-secondary) 85%, black);
 }
 
-button[data-variant="ghost"] {
+.btn-ghost {
   background-color: transparent;
   color: var(--color-foreground);
 }
 
-button[data-variant="ghost"]:hover:not(:disabled) {
+.btn-ghost:hover:not(:disabled) {
   background-color: var(--color-muted);
 }
 
-button[data-variant="destructive"] {
+.btn-destructive {
   background-color: var(--color-destructive);
   color: var(--color-destructive-foreground);
 }
 
-button[data-variant="destructive"]:hover:not(:disabled) {
+.btn-destructive:hover:not(:disabled) {
   background-color: color-mix(in oklab, var(--color-destructive) 90%, black);
 }
 
 /* ===== Badge ===== */
 
-[data-badge] {
+.badge {
   display: inline-flex;
   align-items: center;
   border-radius: var(--radius-full);
@@ -274,28 +271,28 @@ button[data-variant="destructive"]:hover:not(:disabled) {
   white-space: nowrap;
 }
 
-[data-badge][data-variant="default"] {
+.badge-default {
   background-color: var(--color-primary);
   color: var(--color-primary-foreground);
 }
 
-[data-badge][data-variant="outline"] {
+.badge-outline {
   border-color: var(--color-border);
   color: var(--color-foreground);
 }
 
-[data-badge][data-variant="muted"] {
+.badge-muted {
   background-color: var(--color-muted);
   color: var(--color-muted-foreground);
   border-color: var(--color-border);
 }
 
-[data-badge][data-variant="accent"] {
+.badge-accent {
   background-color: var(--color-accent);
   color: var(--color-accent-foreground);
 }
 
-[data-badge][data-variant="success"] {
+.badge-success {
   background-color: var(--color-success-bg);
   color: var(--color-success-fg);
 }
