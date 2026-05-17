@@ -1,0 +1,49 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Assemble site
+        run: |
+          set -eu
+          rm -rf _site
+          mkdir -p _site
+
+          # Top-level index
+          cp .github/pages/index.html _site/index.html
+
+          # neznomi: static HTML/CSS/JS — copy as-is to preserve relative paths
+          mkdir -p _site/neznomi
+          cp -R projects/neznomi/. _site/neznomi/
+
+          # 404 fallback reuses the top index
+          cp _site/index.html _site/404.html
+
+          # Marker so the gh-pages branch is recognizable
+          date -u +"%Y-%m-%dT%H:%M:%SZ" > _site/.built-at
+          touch _site/.nojekyll
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site
+          publish_branch: gh-pages
+          force_orphan: true
+          commit_message: "deploy: ${{ github.sha }}"
