@@ -613,21 +613,25 @@ details {
 }
 
 /* ---------------------------------------------------------
-   Tabs (WAI-ARIA driven) — shadcn-inspired pill style
+   Tabs (WAI-ARIA driven) — tablist + tabpanel form one bordered set.
+   Tablist is the surface-colored top bar with shadcn pill tabs;
+   tabpanel is the bg-colored content area continuing the same outer box.
    --------------------------------------------------------- */
 [role="tablist"] {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 0;
-  padding: 4px;
+  gap: 4px;
+  padding: 6px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
-  margin-bottom: 1rem;
+  border-bottom: none;
+  border-radius: var(--radius) var(--radius) 0 0;
+  margin-bottom: 0;
 }
 
 [role="tab"] {
   appearance: none;
+  flex: 0 0 auto;
   background: transparent;
   border: 1px solid transparent;
   border-radius: var(--radius-sm);
@@ -666,6 +670,16 @@ details {
 }
 
 [role="tabpanel"][hidden] { display: none; }
+
+[role="tabpanel"]:not([hidden]) {
+  display: block;
+  border: 1px solid var(--border);
+  border-top: none;
+  border-radius: 0 0 var(--radius) var(--radius);
+  padding: 1rem 1.25rem;
+  background: var(--bg);
+  margin-bottom: 1rem;
+}
 
 /* ---------------------------------------------------------
    Dialog (Modal)
