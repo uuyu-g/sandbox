@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>sandbox — projects index</title>
+  <link rel="stylesheet" href="./neznomi/app-classless.css" />
+  <style>
+    .meta { color: var(--muted, #888); }
+    .badge {
+      display: inline-block;
+      padding: 0.1rem 0.5rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      border: 1px solid currentColor;
+      vertical-align: middle;
+      margin-left: 0.4rem;
+    }
+    .badge.live { color: #2a8f2a; }
+    .badge.src  { color: #888; }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <header>
+      <h1>sandbox</h1>
+      <p class="meta">Claude で作る複数の独立アプリの集約リポジトリ。各アプリのうち、静的に閲覧できる成果物をここから開けます。</p>
+    </header>
+
+    <section>
+      <h2>Projects</h2>
+      <ul class="stack">
+        <li class="card">
+          <strong>neznomi <span class="badge live">live demo</span></strong>
+          <small>Semantic App CSS — クラスレスな構造駆動 CSS と Web Components</small>
+          <p>
+            <a href="./neznomi/example/index.html">Showcase</a> ／
+            <a href="./neznomi/example/app.html">App shell</a> ／
+            <a href="./neznomi/example/resizable.html">&lt;ui-resizable-box&gt;</a>
+          </p>
+        </li>
+        <li class="card">
+          <strong>taskchute <span class="badge src">source</span></strong>
+          <small>Ruby on Rails アプリ（静的デモなし）</small>
+          <p>
+            <a href="https://github.com/uuyu-g/sandbox/tree/main/projects/taskchute">ソースを見る</a>
+          </p>
+        </li>
+        <li class="card">
+          <strong>taskchute-hono <span class="badge src">source</span></strong>
+          <small>Hono + Cloudflare Workers アプリ（静的デモなし）</small>
+          <p>
+            <a href="https://github.com/uuyu-g/sandbox/tree/main/projects/taskchute-hono">ソースを見る</a>
+          </p>
+        </li>
+      </ul>
+    </section>
+
+    <footer>
+      <p class="meta"><small>このページは <code>main</code> ブランチへの push 時に GitHub Actions で <code>gh-pages</code> ブランチへ自動デプロイされます。</small></p>
+    </footer>
+  </main>
+</body>
+</html>
