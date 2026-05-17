@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>neznomi — App Shell</title>
+  <link rel="stylesheet" href="./app-classless.css" />
+</head>
+<body>
+  <div class="container app">
+    <header>
+      <h1>neznomi Dashboard</h1>
+      <div>
+        <button data-tooltip="お知らせ">🔔</button>
+        <button class="primary">＋ New</button>
+      </div>
+    </header>
+
+    <div class="body">
+      <aside>
+        <h2>Workspace</h2>
+        <ul class="stack">
+          <li><a href="#">📥 Inbox</a></li>
+          <li><a href="#">⭐ Starred</a></li>
+          <li><a href="#">📄 Drafts</a></li>
+        </ul>
+
+        <h3>Projects</h3>
+        <ul class="stack">
+          <li><a href="#">Apollo</a></li>
+          <li><a href="#">Bravo</a></li>
+          <li><a href="#">Charlie</a></li>
+        </ul>
+
+        <h3>Settings</h3>
+        <ul class="stack">
+          <li><label><input type="checkbox" class="switch" checked /> Notifications</label></li>
+          <li><label><input type="checkbox" class="switch" /> Compact mode</label></li>
+        </ul>
+      </aside>
+
+      <main>
+        <h2>Today</h2>
+
+        <div role="tablist">
+          <button role="tab" aria-selected="true"  aria-controls="tp-all" id="tt-all">All</button>
+          <button role="tab" aria-selected="false" aria-controls="tp-todo" id="tt-todo">Todo</button>
+          <button role="tab" aria-selected="false" aria-controls="tp-done" id="tt-done">Done</button>
+        </div>
+
+        <div role="tabpanel" id="tp-all" aria-labelledby="tt-all">
+          <ul class="stack">
+            <li class="card">
+              <label><input type="checkbox" /> デザインレビュー</label>
+              <small>10:00</small>
+              <button>編集</button>
+              <button class="danger">削除</button>
+            </li>
+            <li class="card">
+              <label><input type="checkbox" checked /> 朝会</label>
+              <small>09:30</small>
+              <button>編集</button>
+              <button class="danger">削除</button>
+            </li>
+            <li class="card warning">
+              <label><input type="checkbox" /> 仕様書を提出</label>
+              <small>17:00 — 期限間近</small>
+              <button>編集</button>
+              <button class="danger">削除</button>
+            </li>
+            <li class="card">
+              <label><input type="checkbox" /> プルリクをレビュー</label>
+              <small>any time</small>
+              <button>編集</button>
+              <button class="danger">削除</button>
+            </li>
+          </ul>
+        </div>
+        <div role="tabpanel" id="tp-todo" aria-labelledby="tt-todo" hidden>
+          <p>未完了のタスクのみ表示するパネル。</p>
+        </div>
+        <div role="tabpanel" id="tp-done" aria-labelledby="tt-done" hidden>
+          <p>完了済みのタスクを表示するパネル。</p>
+        </div>
+
+        <h2>Add Task</h2>
+        <form onsubmit="event.preventDefault()">
+          <input type="text" placeholder="新しいタスク…" />
+          <button class="primary" type="submit">追加</button>
+        </form>
+
+        <h2>Stats</h2>
+        <div class="card">
+          <h3>今週のサマリー</h3>
+          <table>
+            <thead><tr><th>曜日</th><th>完了</th><th>残</th></tr></thead>
+            <tbody>
+              <tr><td>月</td><td>5</td><td>1</td></tr>
+              <tr><td>火</td><td>4</td><td>2</td></tr>
+              <tr><td>水</td><td>6</td><td>0</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll('[role="tablist"]').forEach((list) => {
+      list.addEventListener('click', (e) => {
+        const tab = e.target.closest('[role="tab"]');
+        if (!tab) return;
+        list.querySelectorAll('[role="tab"]').forEach((t) => {
+          const selected = t === tab;
+          t.setAttribute('aria-selected', String(selected));
+          const panel = document.getElementById(t.getAttribute('aria-controls'));
+          if (panel) panel.hidden = !selected;
+        });
+      });
+    });
+  </script>
+</body>
+</html>
