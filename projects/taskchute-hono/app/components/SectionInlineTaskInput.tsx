@@ -3,7 +3,6 @@ import { router } from '@inertiajs/react'
 
 import { type SectionValue, sectionLabel } from '@/lib/format'
 import { onEnterKey } from '@/lib/utils'
-import styles from './SectionInlineTaskInput.module.css'
 
 interface Props {
   date: string
@@ -18,7 +17,8 @@ export default function SectionInlineTaskInput({ date, section }: Props) {
   const [submitting, setSubmitting] = useState(false)
   const titleRef = useRef<HTMLInputElement>(null)
 
-  const submit = () => {
+  const submit = (e?: React.FormEvent) => {
+    e?.preventDefault()
     const trimmed = title.trim()
     if (!trimmed || submitting) return
     setSubmitting(true)
@@ -52,7 +52,7 @@ export default function SectionInlineTaskInput({ date, section }: Props) {
   const label = sectionLabel(section)
 
   return (
-    <div className={styles.row}>
+    <form data-inline-input onSubmit={submit}>
       <input
         ref={titleRef}
         type="text"
@@ -60,23 +60,21 @@ export default function SectionInlineTaskInput({ date, section }: Props) {
         onChange={(e) => setTitle(e.target.value)}
         onKeyDown={onKeyDown}
         placeholder={`${label} にタスクを追加（Enter で追加）`}
-        className={styles.title}
         disabled={submitting}
         aria-label={`${label} の新規タスクのタイトル`}
       />
-      <div className={styles.estimateWrap}>
+      <span data-input-wrap>
         <input
           type="number"
           min={0}
           value={estimate}
           onChange={(e) => setEstimate(e.target.value)}
           onKeyDown={onKeyDown}
-          className={styles.estimate}
           disabled={submitting}
           aria-label={`${label} の新規タスクの見積分`}
         />
-        <span className={styles.unit}>分</span>
-      </div>
-    </div>
+        <span data-unit>分</span>
+      </span>
+    </form>
   )
 }

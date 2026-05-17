@@ -29,6 +29,8 @@
   --radius-full: 9999px;
 }
 
+/* ===== Reset ===== */
+
 *,
 *::before,
 *::after {
@@ -42,6 +44,7 @@ body {
 }
 
 body {
+  min-height: 100vh;
   background-color: var(--color-background);
   color: var(--color-foreground);
   font-family:
@@ -76,19 +79,7 @@ a {
   text-decoration: none;
 }
 
-button {
-  font: inherit;
-  color: inherit;
-  background: transparent;
-  border: 0;
-  padding: 0;
-  cursor: pointer;
-}
-
-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
-}
+/* ===== Form primitives ===== */
 
 input,
 select,
@@ -146,4 +137,760 @@ label {
   display: inline-block;
   font-size: 0.8125rem;
   font-weight: 500;
+}
+
+/* ===== Button ===== */
+
+button {
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+button[data-variant] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  white-space: nowrap;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid transparent;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+button[data-variant]:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px var(--color-background),
+    0 0 0 4px var(--color-ring);
+}
+
+button[data-variant] > svg {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+button[data-size="default"] {
+  height: 2.25rem;
+  padding: 0 1rem;
+}
+
+button[data-size="sm"] {
+  height: 2rem;
+  padding: 0 0.75rem;
+  font-size: 0.8125rem;
+}
+
+button[data-size="lg"] {
+  height: 2.5rem;
+  padding: 0 1.5rem;
+}
+
+button[data-size="icon"] {
+  height: 2.25rem;
+  width: 2.25rem;
+  padding: 0;
+}
+
+button[data-size="icon-sm"] {
+  height: 2rem;
+  width: 2rem;
+  padding: 0;
+}
+
+button[data-variant="default"] {
+  background-color: var(--color-primary);
+  color: var(--color-primary-foreground);
+}
+
+button[data-variant="default"]:hover:not(:disabled) {
+  background-color: color-mix(in oklab, var(--color-primary) 90%, white);
+}
+
+button[data-variant="outline"] {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  border-color: var(--color-input);
+}
+
+button[data-variant="outline"]:hover:not(:disabled) {
+  background-color: var(--color-muted);
+}
+
+button[data-variant="secondary"] {
+  background-color: var(--color-secondary);
+  color: var(--color-secondary-foreground);
+}
+
+button[data-variant="secondary"]:hover:not(:disabled) {
+  background-color: color-mix(in oklab, var(--color-secondary) 85%, black);
+}
+
+button[data-variant="ghost"] {
+  background-color: transparent;
+  color: var(--color-foreground);
+}
+
+button[data-variant="ghost"]:hover:not(:disabled) {
+  background-color: var(--color-muted);
+}
+
+button[data-variant="destructive"] {
+  background-color: var(--color-destructive);
+  color: var(--color-destructive-foreground);
+}
+
+button[data-variant="destructive"]:hover:not(:disabled) {
+  background-color: color-mix(in oklab, var(--color-destructive) 90%, black);
+}
+
+/* ===== Badge ===== */
+
+[data-badge] {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--radius-full);
+  border: 1px solid transparent;
+  padding: 0.125rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+[data-badge][data-variant="default"] {
+  background-color: var(--color-primary);
+  color: var(--color-primary-foreground);
+}
+
+[data-badge][data-variant="outline"] {
+  border-color: var(--color-border);
+  color: var(--color-foreground);
+}
+
+[data-badge][data-variant="muted"] {
+  background-color: var(--color-muted);
+  color: var(--color-muted-foreground);
+  border-color: var(--color-border);
+}
+
+[data-badge][data-variant="accent"] {
+  background-color: var(--color-accent);
+  color: var(--color-accent-foreground);
+}
+
+[data-badge][data-variant="success"] {
+  background-color: var(--color-success-bg);
+  color: var(--color-success-fg);
+}
+
+/* ===== App layout ===== */
+
+[data-app] > header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+  padding: 1rem 1.5rem;
+}
+
+@media (min-width: 640px) {
+  [data-app] > header {
+    padding: 1rem 2rem;
+  }
+}
+
+[data-app] > header > hgroup {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+[data-app] > header > hgroup > h1 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+[data-app] > header > hgroup > p {
+  font-size: 0.8125rem;
+  color: var(--color-muted-foreground);
+}
+
+[data-app] > header > nav {
+  display: flex;
+  gap: 0.5rem;
+}
+
+[data-app] > header > nav > a {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-foreground);
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+[data-app] > header > nav > a:hover {
+  background-color: var(--color-secondary);
+}
+
+[data-app] > header > nav > a[data-active="true"],
+[data-app] > header > nav > a[data-active="true"]:hover {
+  background-color: var(--color-primary);
+  color: var(--color-primary-foreground);
+}
+
+main {
+  margin: 0 auto;
+  max-width: 64rem;
+  padding: 2rem 1rem;
+}
+
+@media (min-width: 640px) {
+  main {
+    padding: 2rem 1.5rem;
+  }
+}
+
+/* ===== Page header inside <main> ===== */
+
+main > header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+main > header[data-stack="true"] {
+  align-items: flex-start;
+}
+
+main > header > div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+main > header > div > input[type="date"] {
+  height: 2rem;
+  font-size: 0.8125rem;
+}
+
+main > header > hgroup > h2 {
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+main > header > hgroup > p {
+  margin-top: 0.25rem;
+  font-size: 0.8125rem;
+  color: var(--color-muted-foreground);
+}
+
+/* ===== Flash notice ===== */
+
+main [role="status"] {
+  margin-bottom: 1rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-accent);
+  color: var(--color-accent-foreground);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8125rem;
+}
+
+/* ===== Today: TaskForm (start now) ===== */
+
+main > form[data-task-form] {
+  display: grid;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  main > form[data-task-form] {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+  }
+}
+
+main > form[data-task-form] > p {
+  display: grid;
+  gap: 0.375rem;
+  min-width: 0;
+}
+
+[data-spin] {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ===== Today: summary grid ===== */
+
+main > aside[data-summary] {
+  display: grid;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  main > aside[data-summary] {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 960px) {
+  main > aside[data-summary] {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+main > aside[data-summary] > article {
+  border: 1px solid var(--color-border);
+  background-color: var(--color-card);
+  border-radius: var(--radius-lg);
+  padding: 1rem;
+}
+
+main > aside[data-summary] > article > p {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-muted-foreground);
+}
+
+main > aside[data-summary] > article > strong {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+main > aside[data-summary] > article > strong[data-tone="positive"] {
+  color: var(--color-positive-fg);
+}
+
+main > aside[data-summary] > article > strong[data-tone="negative"] {
+  color: var(--color-negative-fg);
+}
+
+/* ===== Today: sections list ===== */
+
+main > div[data-sections] {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+main > div[data-sections] > section > header {
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+main > div[data-sections] > section > header > h2 {
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+main > div[data-sections] > section > header > p {
+  font-size: 0.75rem;
+  color: var(--color-muted-foreground);
+}
+
+main > div[data-sections] > section > div[data-task-list] {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* ===== Task row ===== */
+
+article[data-task-row] {
+  display: grid;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-card);
+  border-radius: var(--radius-lg);
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+@media (min-width: 640px) {
+  article[data-task-row] {
+    grid-template-columns: 120px minmax(0, 1fr) 110px 120px minmax(220px, auto);
+  }
+}
+
+article[data-task-row][data-status="done"] {
+  background-color: color-mix(in oklab, var(--color-muted) 70%, white);
+  opacity: 0.7;
+}
+
+article[data-task-row][data-status="in-progress"] {
+  background-color: color-mix(in oklab, var(--color-accent) 60%, white);
+  border-color: var(--color-accent-border);
+}
+
+article[data-task-row] > div[data-status-cell] {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+article[data-task-row] > div[data-status-cell] > time {
+  font-size: 0.75rem;
+  color: var(--color-muted-foreground);
+}
+
+article[data-task-row] > div[data-title-cell] {
+  min-width: 0;
+}
+
+article[data-task-row] > div[data-title-cell] > button[data-edit-trigger] {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+article[data-task-row] > div[data-title-cell] > button[data-edit-trigger]:hover {
+  text-decoration: underline;
+}
+
+article[data-task-row][data-status="done"]
+  > div[data-title-cell]
+  > button[data-edit-trigger] {
+  text-decoration: line-through;
+}
+
+article[data-task-row][data-status="done"]
+  > div[data-title-cell]
+  > button[data-edit-trigger]:hover {
+  text-decoration: line-through underline;
+}
+
+article[data-task-row] > div[data-title-cell] > input {
+  height: 2rem;
+  font-size: 0.8125rem;
+  width: 100%;
+}
+
+article[data-task-row] > div[data-title-cell] > small {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 0.125rem;
+  font-size: 0.6875rem;
+  color: var(--color-muted-foreground);
+}
+
+article[data-task-row] > div[data-title-cell] > small > svg {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+article[data-task-row] > div[data-estimate] {
+  font-size: 0.8125rem;
+}
+
+article[data-task-row] > div[data-estimate] > span[data-input-wrap] {
+  position: relative;
+  display: inline-block;
+}
+
+article[data-task-row] > div[data-estimate] > span[data-input-wrap] > input {
+  height: 2rem;
+  font-size: 0.8125rem;
+  padding-right: 2rem;
+}
+
+article[data-task-row] > div[data-estimate] > span[data-input-wrap] > span[data-unit] {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--color-muted-foreground);
+  pointer-events: none;
+}
+
+article[data-task-row] > div[data-actual] {
+  font-size: 0.8125rem;
+  color: var(--color-muted-foreground);
+}
+
+article[data-task-row] > div[data-actual][data-tone="over"] {
+  color: var(--color-negative-fg);
+}
+
+article[data-task-row] > div[data-actual][data-tone="under"] {
+  color: var(--color-positive-fg);
+}
+
+article[data-task-row] > footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.375rem;
+}
+
+/* ===== Section inline task input ===== */
+
+form[data-inline-input] {
+  display: grid;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px dashed var(--color-border);
+  background-color: var(--color-card);
+  border-radius: var(--radius-lg);
+  grid-template-columns: minmax(0, 1fr) 110px;
+}
+
+form[data-inline-input] > input[type="text"] {
+  height: 2rem;
+  font-size: 0.875rem;
+  width: 100%;
+}
+
+form[data-inline-input] > span[data-input-wrap] {
+  position: relative;
+  display: inline-block;
+}
+
+form[data-inline-input] > span[data-input-wrap] > input {
+  height: 2rem;
+  font-size: 0.8125rem;
+  padding-right: 2rem;
+  width: 100%;
+}
+
+form[data-inline-input] > span[data-input-wrap] > span[data-unit] {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--color-muted-foreground);
+  pointer-events: none;
+}
+
+/* ===== Routines page ===== */
+
+main > form[data-routine-form] {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  display: grid;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  main > form[data-routine-form] {
+    grid-template-columns: minmax(0, 1fr) 140px 120px auto;
+    align-items: end;
+  }
+}
+
+main > form[data-routine-form] > p {
+  display: grid;
+  gap: 0.375rem;
+  min-width: 0;
+}
+
+main > form[data-routine-form] > div[data-full] {
+  grid-column: 1 / -1;
+}
+
+main > form[data-routine-form] > div[data-full] > label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+main > div[data-routine-list] {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+main > div[data-routine-list] > p[data-empty] {
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  text-align: center;
+  font-size: 0.8125rem;
+  color: var(--color-muted-foreground);
+  margin: 0;
+}
+
+article[data-routine-row] {
+  display: grid;
+  align-items: center;
+  gap: 0.75rem;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-card);
+  border-radius: var(--radius-lg);
+  padding: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  article[data-routine-row] {
+    grid-template-columns: 100px minmax(0, 1fr) 100px minmax(220px, auto) minmax(160px, auto);
+  }
+}
+
+article[data-routine-row][data-active="false"] {
+  opacity: 0.5;
+}
+
+article[data-routine-row] > div[data-title] {
+  font-weight: 600;
+}
+
+article[data-routine-row] > div[data-estimate] {
+  font-size: 0.8125rem;
+  color: var(--color-muted-foreground);
+}
+
+article[data-routine-row] > div[data-weekday-chips] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+article[data-routine-row] > div[data-weekday-chips] > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: var(--radius-full);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  background-color: var(--color-muted);
+  color: var(--color-muted-foreground);
+}
+
+article[data-routine-row] > div[data-weekday-chips] > span[data-on="true"] {
+  background-color: var(--color-primary);
+  color: var(--color-primary-foreground);
+}
+
+article[data-routine-row] > footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.375rem;
+}
+
+article[data-routine-row][data-editing="true"] {
+  border-color: color-mix(in oklab, var(--color-primary) 40%, transparent);
+  border-width: 2px;
+  padding: 1rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  article[data-routine-row][data-editing="true"] {
+    grid-template-columns: minmax(0, 1fr) 140px 120px auto auto;
+  }
+}
+
+article[data-routine-row][data-editing="true"] > p {
+  display: grid;
+  gap: 0.375rem;
+  min-width: 0;
+}
+
+article[data-routine-row][data-editing="true"] > div[data-full] {
+  grid-column: 1 / -1;
+}
+
+article[data-routine-row][data-editing="true"] > div[data-full] > label[data-weekdays-label] {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+article[data-routine-row][data-editing="true"] > div[data-active-row] {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+article[data-routine-row][data-editing="true"] > div[data-active-row] > label {
+  cursor: pointer;
+  user-select: none;
+}
+
+/* ===== Weekday picker (used in routine form) ===== */
+
+div[data-weekday-picker] {
+  display: flex;
+  gap: 0.375rem;
+  flex-wrap: wrap;
+}
+
+div[data-weekday-picker] > button {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  background-color: transparent;
+  color: var(--color-foreground);
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+div[data-weekday-picker] > button:hover {
+  background-color: var(--color-secondary);
+}
+
+div[data-weekday-picker] > button[data-on="true"],
+div[data-weekday-picker] > button[data-on="true"]:hover {
+  background-color: var(--color-primary);
+  color: var(--color-primary-foreground);
+  border-color: var(--color-primary);
 }

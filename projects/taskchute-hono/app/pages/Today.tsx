@@ -6,9 +6,7 @@ import SectionInlineTaskInput from '@/components/SectionInlineTaskInput'
 import TaskForm from '@/components/TaskForm'
 import TaskRow, { type Task } from '@/components/TaskRow'
 import { Button } from '@/components/ui/Button'
-import { cx } from '@/lib/utils'
 import { SECTIONS, formatMinutes, type SectionValue } from '@/lib/format'
-import styles from './Today.module.css'
 
 interface Summary {
   done_count: number
@@ -64,11 +62,11 @@ export default function Today({ date, tasks, summary }: TodayProps) {
   const diff = summary.actual - summary.estimate
 
   return (
-    <div>
+    <>
       <Head title={`TaskChute - ${date}`} />
 
-      <div className={styles.toolbar}>
-        <div className={styles.dateNav}>
+      <header>
+        <div>
           <Button size="sm" variant="ghost" onClick={() => changeDate(-1)}>
             <ChevronLeft />
             前日
@@ -77,7 +75,6 @@ export default function Today({ date, tasks, summary }: TodayProps) {
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className={styles.dateInput}
           />
           <Button size="sm" variant="ghost" onClick={() => changeDate(1)}>
             翌日
@@ -96,13 +93,13 @@ export default function Today({ date, tasks, summary }: TodayProps) {
           <Repeat />
           ルーチンを展開
         </Button>
-      </div>
+      </header>
 
-      {flash?.notice && <div className={styles.notice}>{flash.notice}</div>}
+      {flash?.notice && <div role="status">{flash.notice}</div>}
 
       <TaskForm />
 
-      <div className={styles.summaryGrid}>
+      <aside data-summary>
         <SummaryCard label="タスク" value={`${summary.done_count} / ${summary.total_count}`} />
         <SummaryCard label="見積合計" value={formatMinutes(summary.estimate)} />
         <SummaryCard label="実績合計" value={formatMinutes(summary.actual)} />
@@ -111,18 +108,16 @@ export default function Today({ date, tasks, summary }: TodayProps) {
           value={`${diff >= 0 ? '+' : ''}${diff}分`}
           tone={diff > 0 ? 'negative' : 'positive'}
         />
-      </div>
+      </aside>
 
-      <div className={styles.sections}>
+      <div data-sections>
         {SECTIONS.map((s) => (
           <section key={s.value}>
-            <div className={styles.sectionHeader}>
-              <h2 className={styles.sectionTitle}>{s.label}</h2>
-              <p className={styles.sectionCount}>
-                {grouped[s.value as SectionValue].length} 件
-              </p>
-            </div>
-            <div className={styles.taskList}>
+            <header>
+              <h2>{s.label}</h2>
+              <p>{grouped[s.value as SectionValue].length} 件</p>
+            </header>
+            <div data-task-list>
               {grouped[s.value as SectionValue].map((t) => (
                 <TaskRow key={t.id} task={t} />
               ))}
@@ -131,7 +126,7 @@ export default function Today({ date, tasks, summary }: TodayProps) {
           </section>
         ))}
       </div>
-    </div>
+    </>
   )
 }
 
@@ -145,17 +140,9 @@ function SummaryCard({
   tone?: 'positive' | 'negative'
 }) {
   return (
-    <div className={styles.summaryCard}>
-      <div className={styles.summaryLabel}>{label}</div>
-      <div
-        className={cx(
-          styles.summaryValue,
-          tone === 'positive' && styles.summaryValuePositive,
-          tone === 'negative' && styles.summaryValueNegative,
-        )}
-      >
-        {value}
-      </div>
-    </div>
+    <article>
+      <p>{label}</p>
+      <strong data-tone={tone ?? 'neutral'}>{value}</strong>
+    </article>
   )
 }

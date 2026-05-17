@@ -4,9 +4,8 @@ import { Repeat, RotateCcw, X } from 'lucide-react'
 
 import { Button } from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
-import { cx, onEnterKey } from '@/lib/utils'
+import { onEnterKey } from '@/lib/utils'
 import { formatMinutes, formatTime } from '@/lib/format'
-import styles from './TaskRow.module.css'
 
 export interface Task {
   id: number
@@ -56,28 +55,25 @@ export default function TaskRow({ task }: { task: Task }) {
     <Badge variant="outline">未着手</Badge>
   )
 
+  const status = task.done ? 'done' : task.in_progress ? 'in-progress' : 'idle'
+
   const actual = task.actual_minutes
   const delta = actual != null ? actual - task.estimate_minutes : null
+  const actualTone =
+    delta == null ? 'neutral' : delta > 0 ? 'over' : delta < 0 ? 'under' : 'neutral'
 
   return (
-    <div
-      className={cx(
-        styles.row,
-        task.done && styles.rowDone,
-        !task.done && task.in_progress && styles.rowInProgress,
-      )}
-    >
-      <div className={styles.status}>
+    <article data-task-row data-status={status}>
+      <div data-status-cell>
         {statusBadge}
-        <div className={styles.time}>
+        <time>
           {formatTime(task.started_at)} → {formatTime(task.finished_at)}
-        </div>
+        </time>
       </div>
 
-      <div className={styles.titleCell}>
+      <div data-title-cell>
         {editing ? (
           <input
-            className={styles.editInput}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             onKeyDown={onEnterKey(() => saveEdit())}
@@ -86,44 +82,38 @@ export default function TaskRow({ task }: { task: Task }) {
         ) : (
           <button
             type="button"
+            data-edit-trigger
             onClick={() => setEditing(true)}
             title="クリックで編集"
-            className={cx(styles.titleButton, task.done && styles.titleDone)}
           >
             {task.title}
           </button>
         )}
         {task.routine_template_id && (
-          <div className={styles.routineLabel}>
+          <small>
             <Repeat />
             ルーチン
-          </div>
+          </small>
         )}
       </div>
 
-      <div className={styles.estimate}>
+      <div data-estimate>
         {editing ? (
-          <div className={styles.estimateInputWrap}>
+          <span data-input-wrap>
             <input
               type="number"
               min={0}
               value={estimate}
               onChange={(e) => setEstimate(e.target.value)}
             />
-            <span className={styles.estimateUnit}>分</span>
-          </div>
+            <span data-unit>分</span>
+          </span>
         ) : (
           <span>見積 {formatMinutes(task.estimate_minutes)}</span>
         )}
       </div>
 
-      <div
-        className={cx(
-          styles.actual,
-          delta != null && delta > 0 && styles.actualOver,
-          delta != null && delta <= 0 && styles.actualUnder,
-        )}
-      >
+      <div data-actual data-tone={actualTone}>
         実績{' '}
         {actual == null
           ? '-'
@@ -132,7 +122,7 @@ export default function TaskRow({ task }: { task: Task }) {
             }`}
       </div>
 
-      <div className={styles.actions}>
+      <footer>
         {editing ? (
           <>
             <Button size="sm" onClick={saveEdit}>
@@ -165,7 +155,7 @@ export default function TaskRow({ task }: { task: Task }) {
             </Button>
           </>
         )}
-      </div>
-    </div>
+      </footer>
+    </article>
   )
 }

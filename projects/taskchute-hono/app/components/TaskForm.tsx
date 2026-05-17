@@ -3,7 +3,6 @@ import { router } from '@inertiajs/react'
 import { Loader2, Play } from 'lucide-react'
 
 import { Button } from '@/components/ui/Button'
-import styles from './TaskForm.module.css'
 
 export default function TaskForm() {
   const [title, setTitle] = useState('')
@@ -27,8 +26,8 @@ export default function TaskForm() {
   }
 
   return (
-    <form onSubmit={submit} className={styles.form}>
-      <div className={styles.field}>
+    <form data-task-form onSubmit={submit}>
+      <p>
         <label htmlFor="task-title">タイトル（任意）</label>
         <input
           id="task-title"
@@ -36,10 +35,10 @@ export default function TaskForm() {
           onChange={(e) => setTitle(e.target.value)}
           placeholder="いま始める作業"
         />
-      </div>
+      </p>
       <div>
         <Button type="submit" disabled={submitting}>
-          {submitting ? <Loader2 className={styles.spin} /> : <Play />}
+          {submitting ? <Loader2 data-spin /> : <Play />}
           いま開始
         </Button>
       </div>

@@ -4,7 +4,6 @@ import { Repeat, X } from 'lucide-react'
 
 import { Button } from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
-import { cx } from '@/lib/utils'
 import {
   SECTIONS,
   WEEKDAYS,
@@ -12,7 +11,6 @@ import {
   sectionLabel,
   type SectionValue,
 } from '@/lib/format'
-import styles from './Routines.module.css'
 
 interface Routine {
   id: number
@@ -100,26 +98,26 @@ export default function Routines({ routines }: RoutinesProps) {
   }
 
   return (
-    <div>
+    <>
       <Head title="TaskChute - ルーチン" />
 
-      <div className={styles.header}>
-        <div>
-          <h1 className={styles.title}>ルーチン</h1>
-          <p className={styles.description}>
+      <header data-stack="true">
+        <hgroup>
+          <h2>ルーチン</h2>
+          <p>
             毎日繰り返すタスクを登録しておくと、対象曜日に「今日」へワンクリックで展開できます。
           </p>
-        </div>
+        </hgroup>
         <Button size="sm" variant="secondary" onClick={expandToday}>
           <Repeat />
           今日へ展開
         </Button>
-      </div>
+      </header>
 
-      {flash?.notice && <div className={styles.notice}>{flash.notice}</div>}
+      {flash?.notice && <div role="status">{flash.notice}</div>}
 
-      <form onSubmit={submitNew} className={styles.form}>
-        <div className={styles.field}>
+      <form data-routine-form onSubmit={submitNew}>
+        <p>
           <label htmlFor="routine-title">タイトル</label>
           <input
             id="routine-title"
@@ -127,8 +125,8 @@ export default function Routines({ routines }: RoutinesProps) {
             onChange={(e) => setDraft({ ...draft, title: e.target.value })}
             placeholder="朝の散歩"
           />
-        </div>
-        <div className={styles.field}>
+        </p>
+        <p>
           <label htmlFor="routine-section">セクション</label>
           <select
             id="routine-section"
@@ -141,8 +139,8 @@ export default function Routines({ routines }: RoutinesProps) {
               </option>
             ))}
           </select>
-        </div>
-        <div className={styles.field}>
+        </p>
+        <p>
           <label htmlFor="routine-estimate">見積(分)</label>
           <input
             id="routine-estimate"
@@ -153,12 +151,12 @@ export default function Routines({ routines }: RoutinesProps) {
               setDraft({ ...draft, estimate_minutes: parseInt(e.target.value, 10) || 0 })
             }
           />
-        </div>
+        </p>
         <Button type="submit" disabled={!draft.title.trim()}>
           追加
         </Button>
-        <div className={styles.fullRow}>
-          <label className={styles.weekdaysLabel}>繰り返す曜日</label>
+        <div data-full="true">
+          <label>繰り返す曜日</label>
           <WeekdayPicker
             value={draft.weekdays}
             onChange={(weekdays) => setDraft({ ...draft, weekdays })}
@@ -166,25 +164,25 @@ export default function Routines({ routines }: RoutinesProps) {
         </div>
       </form>
 
-      <div className={styles.list}>
+      <div data-routine-list>
         {routines.length === 0 && (
-          <div className={styles.empty}>
-            ルーチンはまだありません。上のフォームから追加できます。
-          </div>
+          <p data-empty>ルーチンはまだありません。上のフォームから追加できます。</p>
         )}
         {routines.map((r) =>
           editing?.id === r.id ? (
-            <div key={r.id} className={cx(styles.row, styles.editing)}>
-              <div className={styles.field}>
-                <label>タイトル</label>
+            <article key={r.id} data-routine-row data-editing="true">
+              <p>
+                <label htmlFor={`edit-title-${editing.id}`}>タイトル</label>
                 <input
+                  id={`edit-title-${editing.id}`}
                   value={editing.title}
                   onChange={(e) => setEditing({ ...editing, title: e.target.value })}
                 />
-              </div>
-              <div className={styles.field}>
-                <label>セクション</label>
+              </p>
+              <p>
+                <label htmlFor={`edit-section-${editing.id}`}>セクション</label>
                 <select
+                  id={`edit-section-${editing.id}`}
                   value={editing.section}
                   onChange={(e) =>
                     setEditing({ ...editing, section: e.target.value as SectionValue })
@@ -196,10 +194,11 @@ export default function Routines({ routines }: RoutinesProps) {
                     </option>
                   ))}
                 </select>
-              </div>
-              <div className={styles.field}>
-                <label>見積(分)</label>
+              </p>
+              <p>
+                <label htmlFor={`edit-estimate-${editing.id}`}>見積(分)</label>
                 <input
+                  id={`edit-estimate-${editing.id}`}
                   type="number"
                   min={0}
                   value={String(editing.estimate_minutes)}
@@ -210,30 +209,28 @@ export default function Routines({ routines }: RoutinesProps) {
                     })
                   }
                 />
-              </div>
+              </p>
               <Button onClick={saveEdit}>保存</Button>
               <Button size="icon" variant="ghost" onClick={() => setEditing(null)}>
                 <X />
               </Button>
-              <div className={styles.fullRow}>
-                <label className={styles.weekdaysLabel}>繰り返す曜日</label>
+              <div data-full="true">
+                <label data-weekdays-label>繰り返す曜日</label>
                 <WeekdayPicker
                   value={editing.weekdays}
                   onChange={(weekdays) => setEditing({ ...editing, weekdays })}
                 />
               </div>
-              <div className={cx(styles.fullRow, styles.activeRow)}>
+              <div data-active-row>
                 <input
                   id={`active-${editing.id}`}
                   type="checkbox"
                   checked={editing.active}
                   onChange={(e) => setEditing({ ...editing, active: e.target.checked })}
                 />
-                <label htmlFor={`active-${editing.id}`} className={styles.activeLabel}>
-                  有効
-                </label>
+                <label htmlFor={`active-${editing.id}`}>有効</label>
               </div>
-            </div>
+            </article>
           ) : (
             <RoutineRow
               key={r.id}
@@ -244,7 +241,7 @@ export default function Routines({ routines }: RoutinesProps) {
           ),
         )}
       </div>
-    </div>
+    </>
   )
 }
 
@@ -258,32 +255,29 @@ function RoutineRow({
   onDelete: () => void
 }) {
   return (
-    <div className={cx(styles.row, !routine.active && styles.rowInactive)}>
+    <article data-routine-row data-active={routine.active ? 'true' : 'false'}>
       <Badge variant="muted">{sectionLabel(routine.section)}</Badge>
-      <div className={styles.rowTitle}>{routine.title}</div>
-      <div className={styles.rowEstimate}>{formatMinutes(routine.estimate_minutes)}</div>
-      <div className={styles.weekdayChips}>
+      <div data-title>{routine.title}</div>
+      <div data-estimate>{formatMinutes(routine.estimate_minutes)}</div>
+      <div data-weekday-chips>
         {WEEKDAYS.map((w) => {
           const on = routine.weekdays.includes(w.value)
           return (
-            <span
-              key={w.value}
-              className={cx(styles.weekdayChip, on && styles.weekdayChipOn)}
-            >
+            <span key={w.value} data-on={on ? 'true' : 'false'}>
               {w.label}
             </span>
           )
         })}
       </div>
-      <div className={styles.rowActions}>
+      <footer>
         <Button size="sm" variant="outline" onClick={onEdit}>
           編集
         </Button>
         <Button size="icon-sm" variant="ghost" onClick={onDelete}>
           <X />
         </Button>
-      </div>
-    </div>
+      </footer>
+    </article>
   )
 }
 
@@ -299,15 +293,15 @@ function WeekdayPicker({
     else onChange([...value, w].sort((a, b) => a - b))
   }
   return (
-    <div className={styles.weekdayPicker}>
+    <div data-weekday-picker>
       {WEEKDAYS.map((w) => {
         const on = value.includes(w.value)
         return (
           <button
             key={w.value}
             type="button"
+            data-on={on ? 'true' : 'false'}
             onClick={() => toggle(w.value)}
-            className={cx(styles.weekdayButton, on && styles.weekdayButtonOn)}
           >
             {w.label}
           </button>
