@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>neznomi — Docs sample</title>
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('neznomi-theme');
+        if (t === 'dark' || t === 'light') {
+          document.documentElement.setAttribute('data-theme', t);
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="../app-classless.css" />
+  <style>
+    /* Doc-only flourishes that don't belong in the framework. */
+    article > section + section { margin-top: 2.25rem; }
+    article :is(h2, h3) { scroll-margin-top: 1rem; }
+    aside nav ul.stack > li > a {
+      display: block;
+      padding: 0.3rem 0.5rem;
+      border-radius: var(--radius-sm);
+      color: var(--text);
+    }
+    aside nav ul.stack > li > a:hover {
+      background: color-mix(in srgb, var(--primary) 12%, transparent);
+      text-decoration: none;
+    }
+    aside nav ul.stack > li > a[aria-current="page"] {
+      background: color-mix(in srgb, var(--primary) 18%, transparent);
+      color: var(--primary);
+      font-weight: 600;
+    }
+    .callout {
+      display: flex;
+      gap: 0.75rem;
+      padding: 0.85rem 1rem;
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--primary);
+      border-radius: var(--radius);
+      background: color-mix(in srgb, var(--primary) 6%, var(--bg));
+      margin: 0 0 1rem;
+    }
+    .callout.warning {
+      border-left-color: var(--warning);
+      background: color-mix(in srgb, var(--warning) 8%, var(--bg));
+    }
+    .callout > strong { flex: 0 0 auto; }
+  </style>
+</head>
+<body>
+  <div class="container app">
+    <header>
+      <h1>neznomi <small style="font-weight:500; color:var(--text-muted);">/ docs</small></h1>
+      <div style="display:flex; align-items:center; gap:0.5rem;">
+        <a href="./index.html">Showcase</a>
+        <a href="./app.html">App shell</a>
+        <button id="theme-toggle" type="button" aria-label="テーマ切り替え" title="テーマ切り替え"
+                style="min-width:44px; padding:0 0.75rem; font-size:1.1rem;">🌗</button>
+      </div>
+    </header>
+
+    <div class="body">
+      <aside>
+        <nav aria-label="ドキュメント目次">
+          <h2>Getting Started</h2>
+          <ul class="stack">
+            <li><a href="#intro" aria-current="page">はじめに</a></li>
+            <li><a href="#install">インストール</a></li>
+            <li><a href="#setup">基本のセットアップ</a></li>
+          </ul>
+
+          <h3>Concepts</h3>
+          <ul class="stack">
+            <li><a href="#classless">クラスレス指向</a></li>
+            <li><a href="#tokens">デザイントークン</a></li>
+            <li><a href="#themes">ライト / ダーク</a></li>
+          </ul>
+
+          <h3>Components</h3>
+          <ul class="stack">
+            <li><a href="#buttons">Buttons</a></li>
+            <li><a href="#forms">Forms</a></li>
+            <li><a href="#tabs">Tabs</a></li>
+            <li><a href="#table">Table</a></li>
+          </ul>
+
+          <h3>Reference</h3>
+          <ul class="stack">
+            <li><a href="#variables">CSS 変数一覧</a></li>
+            <li><a href="#faq">FAQ</a></li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main>
+        <article>
+          <header style="border:none; padding:0; background:transparent; display:block; margin-bottom:1.5rem;">
+            <p><small style="color:var(--text-muted);">Getting Started · 5 min read</small></p>
+            <h1 id="intro" style="margin-bottom:0.25rem;">はじめに</h1>
+            <p style="color:var(--text-muted);">
+              neznomi は、セマンティックな HTML を素直に組むだけでモダンなアプリ UI になる、
+              クラスレス & 構造駆動の CSS フレームワークです。
+            </p>
+          </header>
+
+          <section>
+            <h2 id="install">インストール</h2>
+            <p>単一の CSS ファイルをリンクするだけで導入できます。ビルドステップはありません。</p>
+            <pre><code>&lt;link rel="stylesheet" href="https://example.com/neznomi/app-classless.css"&gt;</code></pre>
+            <p>ローカルに置く場合は <code>app-classless.css</code> をプロジェクト配下にコピーしてください。</p>
+            <div class="callout">
+              <strong>Tip</strong>
+              <span><code>color-scheme: light dark</code> をルートで宣言済みなので、フォームコントロールなどもシステム設定に追従します。</span>
+            </div>
+          </section>
+
+          <section>
+            <h2 id="setup">基本のセットアップ</h2>
+            <p>典型的なページ構造は次のとおりです。コンテンツに <code>class</code> をほとんど付けません。</p>
+            <pre><code>&lt;!doctype html&gt;
+&lt;html lang="ja"&gt;
+  &lt;head&gt;
+    &lt;meta charset="utf-8" /&gt;
+    &lt;link rel="stylesheet" href="./app-classless.css" /&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;main class="container"&gt;
+      &lt;header&gt;
+        &lt;h1&gt;My App&lt;/h1&gt;
+      &lt;/header&gt;
+      &lt;section&gt;
+        &lt;h2&gt;Hello&lt;/h2&gt;
+        &lt;p&gt;最小構成のページです。&lt;/p&gt;
+      &lt;/section&gt;
+    &lt;/main&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+            <p>アプリシェル（左ナビ + メイン）が欲しいときは <code>&lt;div class="container app"&gt;</code> をルートに置きます。</p>
+          </section>
+
+          <section>
+            <h2 id="classless">クラスレス指向</h2>
+            <p>
+              要素そのものの意味（タグ）と、状態を示す ARIA 属性をスタイルの主たるフックにしています。
+              これにより、コンポーネントごとの命名規則を覚えずに済み、HTML を読むだけで構造が把握できます。
+            </p>
+            <blockquote>
+              「クラス名を考える時間」を「意味のあるマークアップを書く時間」に置き換える、という方針です。
+            </blockquote>
+            <p>強調や色付けが必要なときだけ <code>.primary</code> / <code>.danger</code> などの文脈クラスを使います。</p>
+          </section>
+
+          <section>
+            <h2 id="tokens">デザイントークン</h2>
+            <p>カラーや角丸、シャドウなどはすべて CSS 変数で公開されています。テーマ拡張は <code>:root</code> に変数を上書きするだけです。</p>
+            <table>
+              <thead>
+                <tr><th>変数名</th><th>役割</th><th>既定 (light)</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>--bg</code></td><td>ページ背景</td><td>#ffffff</td></tr>
+                <tr><td><code>--text</code></td><td>本文テキスト</td><td>#1a1a1a</td></tr>
+                <tr><td><code>--surface</code></td><td>区切り面（サイドバー / タブバー）</td><td>#f7f8fa</td></tr>
+                <tr><td><code>--primary</code></td><td>主要アクション</td><td>#3b82f6</td></tr>
+                <tr><td><code>--radius</code></td><td>角丸の基準</td><td>8px</td></tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section>
+            <h2 id="themes">ライト / ダーク</h2>
+            <p>
+              <code>prefers-color-scheme</code> に追従して自動切替されます。
+              ユーザー操作で強制したい場合は、<code>&lt;html&gt;</code> に <code>data-theme="dark"</code>
+              または <code>data-theme="light"</code> を付与します。
+            </p>
+            <div class="callout warning">
+              <strong>Note</strong>
+              <span>このページ右上の 🌗 ボタンが、まさにその <code>data-theme</code> を切り替えています。</span>
+            </div>
+          </section>
+
+          <section>
+            <h2 id="buttons">Buttons</h2>
+            <p>標準の <code>&lt;button&gt;</code> にステータスを表す文脈クラスを付けるだけ。</p>
+            <p>
+              <button>Default</button>
+              <button class="primary">Primary</button>
+              <button class="success">Success</button>
+              <button class="warning">Warning</button>
+              <button class="danger">Danger</button>
+            </p>
+          </section>
+
+          <section>
+            <h2 id="forms">Forms</h2>
+            <p>フォームはブロック要素を持つかどうかで、自動的にインライン / スタック配置を切り替えます。</p>
+            <form onsubmit="event.preventDefault()">
+              <input type="search" placeholder="検索キーワード…" />
+              <button class="primary" type="submit">検索</button>
+            </form>
+          </section>
+
+          <section>
+            <h2 id="tabs">Tabs</h2>
+            <p>WAI-ARIA の <code>role="tablist"</code> / <code>role="tab"</code> / <code>role="tabpanel"</code> を素直に組むだけで、タブとパネルが一体化したデザインになります。</p>
+            <div role="tablist">
+              <button role="tab" aria-selected="true" aria-controls="d-p1" id="d-t1">概要</button>
+              <button role="tab" aria-selected="false" aria-controls="d-p2" id="d-t2">API</button>
+              <button role="tab" aria-selected="false" aria-controls="d-p3" id="d-t3">例</button>
+            </div>
+            <div role="tabpanel" id="d-p1" aria-labelledby="d-t1">
+              <p>選択中のタブとこのパネルが 1 つの囲み box として見えるよう設計されています。</p>
+            </div>
+            <div role="tabpanel" id="d-p2" aria-labelledby="d-t2" hidden>
+              <p>API パネルのダミー内容。</p>
+            </div>
+            <div role="tabpanel" id="d-p3" aria-labelledby="d-t3" hidden>
+              <p>例のダミー内容。</p>
+            </div>
+          </section>
+
+          <section>
+            <h2 id="table">Table</h2>
+            <p>素のテーブル要素を組むだけで、ヘッダ強調・ホバー・角丸まで自動で付きます。</p>
+            <table>
+              <thead>
+                <tr><th>メソッド</th><th>返り値</th><th>説明</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>init()</code></td><td><code>void</code></td><td>イベントを束ねる初期化</td></tr>
+                <tr><td><code>toggle(name)</code></td><td><code>boolean</code></td><td>名前付きフラグを反転</td></tr>
+                <tr><td><code>destroy()</code></td><td><code>void</code></td><td>後始末。再利用前提</td></tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section>
+            <h2 id="variables">CSS 変数一覧</h2>
+            <p>主要な変数は <a href="#tokens">デザイントークン</a> を参照してください。一覧の完全版はソース内のコメントに記載しています。</p>
+          </section>
+
+          <section>
+            <h2 id="faq">FAQ</h2>
+            <details open>
+              <summary>カスタムクラスは作るべき？</summary>
+              <p>原則不要です。要素 + 文脈クラス（<code>.primary</code> など）の組み合わせで表現してください。</p>
+            </details>
+            <details>
+              <summary>SSR / 静的サイトに使える？</summary>
+              <p>使えます。ビルドは不要で、CSS をリンクするだけです。</p>
+            </details>
+            <details>
+              <summary>JavaScript は必要？</summary>
+              <p>大半は CSS だけで動作します。タブ切替やテーマ切替などインタラクションのみ JS を書いてください。</p>
+            </details>
+          </section>
+        </article>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll('[role="tablist"]').forEach((list) => {
+      list.addEventListener('click', (e) => {
+        const tab = e.target.closest('[role="tab"]');
+        if (!tab) return;
+        list.querySelectorAll('[role="tab"]').forEach((t) => {
+          const selected = t === tab;
+          t.setAttribute('aria-selected', String(selected));
+          const panel = document.getElementById(t.getAttribute('aria-controls'));
+          if (panel) panel.hidden = !selected;
+        });
+      });
+    });
+
+    (function () {
+      const root = document.documentElement;
+      const btn = document.getElementById('theme-toggle');
+      if (!btn) return;
+      const mql = window.matchMedia('(prefers-color-scheme: dark)');
+
+      function effectiveTheme() {
+        const explicit = root.getAttribute('data-theme');
+        if (explicit === 'dark' || explicit === 'light') return explicit;
+        return mql.matches ? 'dark' : 'light';
+      }
+      function syncButton() {
+        const dark = effectiveTheme() === 'dark';
+        btn.textContent = dark ? '🌞' : '🌙';
+        btn.setAttribute('aria-label', dark ? 'ライトテーマに切り替え' : 'ダークテーマに切り替え');
+      }
+      btn.addEventListener('click', () => {
+        const next = effectiveTheme() === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        try { localStorage.setItem('neznomi-theme', next); } catch (e) {}
+        syncButton();
+      });
+      mql.addEventListener('change', () => {
+        let stored = null;
+        try { stored = localStorage.getItem('neznomi-theme'); } catch (e) {}
+        if (stored !== 'dark' && stored !== 'light') syncButton();
+      });
+      syncButton();
+    })();
+  </script>
+</body>
+</html>
