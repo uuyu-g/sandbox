@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>neznomi — &lt;ui-resizable-box&gt;</title>
+  <link rel="stylesheet" href="../app-classless.css" />
+  <script src="../ui-resizable-box.js" defer></script>
+</head>
+<body>
+  <div class="container app">
+    <header>
+      <h1>&lt;ui-resizable-box&gt;</h1>
+      <small>スプリッターをドラッグ／矢印キーで幅を調整</small>
+    </header>
+
+    <ui-resizable-box initial-width="280px" min-width="180" max-width="520" style="min-height:0;">
+      <aside>
+        <h2>Left Pane</h2>
+        <ul class="stack">
+          <li><a href="#">Item A</a></li>
+          <li><a href="#">Item B</a></li>
+          <li><a href="#">Item C</a></li>
+        </ul>
+
+        <h3>Filters</h3>
+        <ul class="stack">
+          <li><label><input type="checkbox" /> Active</label></li>
+          <li><label><input type="checkbox" checked /> Pinned</label></li>
+        </ul>
+      </aside>
+
+      <main>
+        <h2>Right Pane</h2>
+        <p>
+          このコンポーネントは Shadow DOM に完全カプセル化されており、
+          外側の CSS に影響を与えません。スプリッターをドラッグするか、
+          スプリッターにフォーカスして <kbd>←</kbd>/<kbd>→</kbd> で幅を変更できます
+          （<kbd>Shift</kbd> を押しながらで大きく、<kbd>Home</kbd>/<kbd>End</kbd> で端まで）。
+        </p>
+
+        <h3>Nested usage</h3>
+        <ui-resizable-box initial-width="40%" min-width="120" style="height:240px; border:1px solid var(--border); border-radius:var(--radius); overflow:hidden;">
+          <section style="padding:1rem;">
+            <h4>Inner Left</h4>
+            <p>入れ子もできます。</p>
+          </section>
+          <section style="padding:1rem;">
+            <h4>Inner Right</h4>
+            <p>各インスタンスは独立して動作します。</p>
+          </section>
+        </ui-resizable-box>
+      </main>
+    </ui-resizable-box>
+  </div>
+</body>
+</html>
