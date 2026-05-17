@@ -15,8 +15,8 @@ export function Button({
   className,
   ...props
 }: ButtonProps) {
-  const classes = ['btn', `btn-${variant}`]
-  if (size !== 'default') classes.push(`btn-${size}`)
+  const classes = [variant]
+  if (size !== 'default') classes.push(size)
   if (className) classes.push(className)
   return <button type={type} className={classes.join(' ')} {...props} />
 }
