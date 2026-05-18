@@ -457,15 +457,32 @@ main > form.task-form > p {
 /* ===== Today: summary grid ===== */
 
 main > aside.summary {
-  display: grid;
+  display: flex;
   gap: 0.75rem;
   margin-bottom: 1.5rem;
-  grid-template-columns: 1fr;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+main > aside.summary > article {
+  flex: 0 0 12rem;
+  scroll-snap-align: start;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-card);
+  border-radius: var(--radius-lg);
+  padding: 1rem;
 }
 
 @media (min-width: 640px) {
   main > aside.summary {
+    display: grid;
     grid-template-columns: repeat(2, 1fr);
+    overflow-x: visible;
+  }
+
+  main > aside.summary > article {
+    flex: initial;
   }
 }
 
@@ -473,13 +490,6 @@ main > aside.summary {
   main > aside.summary {
     grid-template-columns: repeat(4, 1fr);
   }
-}
-
-main > aside.summary > article {
-  border: 1px solid var(--color-border);
-  background-color: var(--color-card);
-  border-radius: var(--radius-lg);
-  padding: 1rem;
 }
 
 main > aside.summary > article > p {
