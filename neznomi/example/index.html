@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>neznomi — Showcase</title>
+  <link rel="stylesheet" href="../app-classless.css" />
+</head>
+<body>
+  <main class="container">
+    <header>
+      <h1>neznomi</h1>
+      <p><small>Semantic App CSS v1.0 — クラスレス & 構造駆動のショーケース</small></p>
+    </header>
+
+    <section>
+      <h2>Typography</h2>
+      <h1>H1 見出し</h1>
+      <h2>H2 見出し</h2>
+      <h3>H3 見出し</h3>
+      <p>本文。<a href="#">リンク</a> と <code>inline code</code>、<kbd>⌘</kbd>+<kbd>K</kbd> のように使えます。</p>
+      <blockquote>引用ブロック。<code>blockquote</code> タグだけで自動スタイル。</blockquote>
+    </section>
+
+    <section>
+      <h2>Buttons</h2>
+      <p>
+        <button>Default</button>
+        <button class="primary">Primary</button>
+        <button class="success">Success</button>
+        <button class="warning">Warning</button>
+        <button class="danger">Danger</button>
+        <button disabled>Disabled</button>
+        <button data-tooltip="ヘルプテキストです">Tooltip</button>
+      </p>
+    </section>
+
+    <section>
+      <h2>Forms — Inline</h2>
+      <form onsubmit="event.preventDefault()">
+        <input type="search" placeholder="検索キーワード…" />
+        <button class="primary" type="submit">検索</button>
+      </form>
+    </section>
+
+    <section>
+      <h2>Forms — Stack</h2>
+      <form onsubmit="event.preventDefault()">
+        <p>
+          <label for="email">メールアドレス</label>
+          <input id="email" type="email" placeholder="you@example.com" />
+        </p>
+        <p>
+          <label for="pw">パスワード</label>
+          <input id="pw" type="password" aria-invalid="true" />
+          <small>8文字以上で入力してください。</small>
+        </p>
+        <p>
+          <label for="role">ロール</label>
+          <select id="role">
+            <option>Admin</option>
+            <option>Editor</option>
+            <option>Viewer</option>
+          </select>
+        </p>
+        <p>
+          <label for="bio">プロフィール</label>
+          <textarea id="bio" placeholder="自己紹介…"></textarea>
+        </p>
+        <p>
+          <button type="button">キャンセル</button>
+          <button class="primary" type="submit">保存</button>
+        </p>
+      </form>
+    </section>
+
+    <section>
+      <h2>Checkboxes & Switches</h2>
+      <ul class="stack">
+        <li>
+          <label><input type="checkbox" checked /> 牛乳を買う</label>
+        </li>
+        <li>
+          <label><input type="checkbox" /> ジムに行く</label>
+        </li>
+        <li>
+          <label><input type="checkbox" /> 確定申告</label>
+        </li>
+        <li>
+          <label><input type="checkbox" class="switch" /> プッシュ通知</label>
+        </li>
+        <li>
+          <label><input type="checkbox" class="switch" checked /> ダークモード自動連動</label>
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Stack + Card (auto row)</h2>
+      <ul class="stack">
+        <li class="card">
+          <strong>Project Apollo</strong>
+          <small>updated 1h ago</small>
+          <button>Open</button>
+          <button class="danger">Delete</button>
+        </li>
+        <li class="card primary">
+          <strong>Project Bravo</strong>
+          <small>updated yesterday</small>
+          <button>Open</button>
+          <button class="danger">Delete</button>
+        </li>
+        <li class="card warning">
+          <strong>Project Charlie</strong>
+          <small>archived</small>
+          <button>Open</button>
+          <button class="danger">Delete</button>
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Accordion</h2>
+      <details open>
+        <summary>FAQ — neznomi とは？</summary>
+        <p>セマンティックな HTML を組むだけでモダンなアプリ UI になる、構造駆動の CSS フレームワークです。</p>
+      </details>
+      <details>
+        <summary>カスタムクラスは作るべき？</summary>
+        <p>原則不要。要素 + 文脈クラス（<code>.primary</code> など）の組み合わせで表現します。</p>
+      </details>
+    </section>
+
+    <section>
+      <h2>Tabs (WAI-ARIA)</h2>
+      <div role="tablist">
+        <button role="tab" aria-selected="true" aria-controls="p1" id="t1">概要</button>
+        <button role="tab" aria-selected="false" aria-controls="p2" id="t2">設定</button>
+        <button role="tab" aria-selected="false" aria-controls="p3" id="t3">ログ</button>
+      </div>
+      <div role="tabpanel" id="p1" aria-labelledby="t1">
+        <p>このパネルは <code>aria-selected="true"</code> のタブにのみハイライトが入ります。</p>
+      </div>
+      <div role="tabpanel" id="p2" aria-labelledby="t2" hidden>
+        <p>設定パネルの内容。</p>
+      </div>
+      <div role="tabpanel" id="p3" aria-labelledby="t3" hidden>
+        <p>ログパネルの内容。</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Dialog (Modal)</h2>
+      <p>
+        <button class="primary" onclick="document.getElementById('demo-dialog').showModal()">モーダルを開く</button>
+      </p>
+      <dialog id="demo-dialog">
+        <header>
+          <h3>確認</h3>
+          <button aria-label="閉じる" onclick="this.closest('dialog').close()">×</button>
+        </header>
+        <form method="dialog">
+          <p>このアイテムを削除しますか？この操作は取り消せません。</p>
+          <p>
+            <button value="cancel">キャンセル</button>
+            <button class="danger" value="ok">削除する</button>
+          </p>
+        </form>
+      </dialog>
+    </section>
+
+    <section>
+      <h2>Table</h2>
+      <table>
+        <thead>
+          <tr><th>Name</th><th>Role</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Alice</td><td>Admin</td><td>Active</td></tr>
+          <tr><td>Bob</td><td>Editor</td><td>Active</td></tr>
+          <tr><td>Carol</td><td>Viewer</td><td>Invited</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <script>
+    document.querySelectorAll('[role="tablist"]').forEach((list) => {
+      list.addEventListener('click', (e) => {
+        const tab = e.target.closest('[role="tab"]');
+        if (!tab) return;
+        list.querySelectorAll('[role="tab"]').forEach((t) => {
+          const selected = t === tab;
+          t.setAttribute('aria-selected', String(selected));
+          const panel = document.getElementById(t.getAttribute('aria-controls'));
+          if (panel) panel.hidden = !selected;
+        });
+      });
+    });
+  </script>
+</body>
+</html>
