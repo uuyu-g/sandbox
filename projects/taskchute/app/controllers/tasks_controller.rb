@@ -18,29 +18,29 @@ class TasksController < ApplicationController
     task.scheduled_on ||= Date.current
     task.position ||= next_position_for(task.scheduled_on, task.section)
     if task.save
-      redirect_to tasks_path(date: task.scheduled_on.iso8601)
+      redirect_to tasks_path(date: task.scheduled_on.iso8601), status: :see_other
     else
-      redirect_to tasks_path, inertia: { errors: task.errors }
+      redirect_to tasks_path, inertia: { errors: task.errors }, status: :see_other
     end
   end
 
   def update
     if @task.update(task_params)
-      redirect_to tasks_path(date: @task.scheduled_on.iso8601)
+      redirect_to tasks_path(date: @task.scheduled_on.iso8601), status: :see_other
     else
-      redirect_to tasks_path(date: @task.scheduled_on.iso8601), inertia: { errors: @task.errors }
+      redirect_to tasks_path(date: @task.scheduled_on.iso8601), inertia: { errors: @task.errors }, status: :see_other
     end
   end
 
   def destroy
     date = @task.scheduled_on
     @task.destroy
-    redirect_to tasks_path(date: date.iso8601)
+    redirect_to tasks_path(date: date.iso8601), status: :see_other
   end
 
   def start
     @task.update!(started_at: Time.current, finished_at: nil, done: false)
-    redirect_to tasks_path(date: @task.scheduled_on.iso8601)
+    redirect_to tasks_path(date: @task.scheduled_on.iso8601), status: :see_other
   end
 
   def start_now
@@ -75,12 +75,12 @@ class TasksController < ApplicationController
     @task.finished_at = Time.current
     @task.done = true
     @task.save!
-    redirect_to tasks_path(date: @task.scheduled_on.iso8601)
+    redirect_to tasks_path(date: @task.scheduled_on.iso8601), status: :see_other
   end
 
   def reset
     @task.update!(started_at: nil, finished_at: nil, done: false)
-    redirect_to tasks_path(date: @task.scheduled_on.iso8601)
+    redirect_to tasks_path(date: @task.scheduled_on.iso8601), status: :see_other
   end
 
   def reorder
@@ -90,7 +90,7 @@ class TasksController < ApplicationController
       next unless task
       task.update!(section: item[:section], position: item[:position])
     end
-    redirect_to tasks_path(date: date.iso8601)
+    redirect_to tasks_path(date: date.iso8601), status: :see_other
   end
 
   private
